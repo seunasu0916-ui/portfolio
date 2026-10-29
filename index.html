@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>최서은 포트폴리오 앱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  /* Phone-app mockup of the portfolio: one deliberate light look (paper + ink + green/gold/coral) */
+  :root{
+    color-scheme: light;
+    --desk:#EFEAE0;
+    --paper:#F6F3EA;
+    --card:#FFFFFF;
+    --ink:#1D241E;
+    --ink-soft:#5B6259;
+    --green:#2E5541;
+    --green-soft:#DEE7DC;
+    --gold:#E3A73B;
+    --gold-soft:#F7E7C6;
+    --gold-ink:#7A5613;
+    --coral:#FF5A44;
+    --line:#DAD3C1;
+    --on-ink:#C8CBC4;
+    --serif:'Fraunces', 'Noto Serif KR', 'AppleMyungjo', serif;
+    --sans:'Work Sans', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --mono:'Space Mono', 'Apple SD Gothic Neo', 'Noto Sans KR', monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background-color:var(--desk);
+    background-image:
+      linear-gradient(rgba(46,85,65,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,85,65,0.06) 1px, transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink); font-family:var(--sans);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding-block:36px;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));
+    padding-right:max(16px, env(safe-area-inset-right, 0px));
+    min-height:100%;
+  }
+
+  /* PHONE SHELL */
+  .phone{
+    width:390px; max-width:100%; height:844px; max-height:calc(100vh - 72px);
+    background:var(--paper); border:10px solid var(--ink); border-radius:46px;
+    box-shadow:0 30px 70px rgba(29,36,30,0.28);
+    overflow:hidden; position:relative; display:flex; flex-direction:column;
+  }
+  .status-bar{
+    flex-shrink:0; height:40px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px; font-family:var(--mono); font-size:12.5px; font-weight:700;
+  }
+  .status-bar .dots{ display:flex; gap:4px; align-items:flex-end; }
+  .status-bar .bar{ width:3px; background:var(--ink); border-radius:1px; }
+  .status-bar .bar:nth-child(1){ height:5px; } .status-bar .bar:nth-child(2){ height:7px; }
+  .status-bar .bar:nth-child(3){ height:9px; } .status-bar .bar:nth-child(4){ height:11px; }
+
+  .app-header{
+    flex-shrink:0; padding:6px 22px 16px; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line);
+  }
+  .app-header h2{ font-family:var(--serif); font-weight:600; font-size:21px; }
+  .app-header .eyebrow{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); font-weight:700; }
+  .header-avatar{ width:34px; height:34px; border-radius:50%; background:var(--green); color:var(--paper); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:700; font-size:14px; }
+
+  .screen-area{ flex:1; overflow-y:auto; position:relative; -webkit-overflow-scrolling:touch; }
+  .screen{ display:none; padding:20px 22px 28px; }
+  .screen.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:.4; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  /* TAB BAR */
+  .tabbar{ flex-shrink:0; display:flex; background:var(--card); border-top:1px solid var(--line); padding-bottom:6px; }
+  .tab-btn{
+    flex:1; background:none; border:none; cursor:pointer; padding:9px 2px 4px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-family:var(--mono); font-size:9.5px; color:var(--ink-soft); font-weight:700;
+  }
+  .tab-btn .ic{ font-size:19px; line-height:1; }
+  .tab-btn.active{ color:var(--coral); }
+  .tab-btn:focus-visible, .back-btn:focus-visible, .proj-card:focus-visible, .quick-card:focus-visible, a:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+  .home-indicator{ flex-shrink:0; display:flex; justify-content:center; padding:8px 0 4px; background:var(--card); }
+  .home-indicator span{ width:120px; height:4px; border-radius:3px; background:var(--ink); opacity:.7; }
+
+  /* HOME */
+  .profile-card{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:26px 22px; text-align:center; }
+  .profile-pic{ width:64px; height:64px; border-radius:50%; background:var(--green); color:var(--paper); font-family:var(--serif); font-weight:700; font-size:24px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+  .profile-card h1{ font-family:var(--serif); font-weight:600; font-size:22px; line-height:1.3; text-wrap:balance; }
+  .profile-card h1 em{ font-style:italic; color:var(--green); }
+  .profile-role{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:10px; line-height:1.6; }
+  .avail{
+    margin-top:16px; display:inline-flex; gap:8px; align-items:center;
+    background:var(--paper); border:1px solid var(--line); padding:8px 14px; border-radius:100px;
+    font-family:var(--mono); font-size:11px;
+  }
+  .avail .dot{ width:7px; height:7px; border-radius:50%; background:var(--coral); }
+  .lede{ margin-top:16px; font-size:13.5px; line-height:1.75; color:var(--ink-soft); text-align:left; }
+  .lede + .lede{ margin-top:10px; }
+  .tags-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; justify-content:center; }
+  .tag{ background:var(--paper); border:1px solid var(--line); font-size:12px; font-weight:600; padding:7px 13px; border-radius:100px; }
+
+  .sec-label{ font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); font-weight:700; margin:26px 0 12px; }
+  .quick-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .quick-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; cursor:pointer; text-align:left; font:inherit; color:inherit; }
+  .quick-card .n{ font-family:var(--serif); font-size:20px; font-weight:700; color:var(--green); }
+  .quick-card .l{ font-size:11px; color:var(--ink-soft); margin-top:2px; }
+
+  .ticker-wrap{ margin-top:22px; border-radius:14px; overflow:hidden; background:var(--ink); }
+  .ticker{ display:flex; white-space:nowrap; animation:scroll 18s linear infinite; }
+  .ticker span{ font-family:var(--mono); font-size:11px; color:var(--paper); padding:12px 18px; }
+  .ticker span::after{ content:"◆"; margin-left:18px; color:var(--gold); }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* SKILLS */
+  .comp-bar{ margin-bottom:16px; }
+  .cb-top{ display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:6px; }
+  .cb-top span:last-child{ font-family:var(--mono); color:var(--green); }
+  .comp-track{ height:8px; background:var(--green-soft); border-radius:100px; overflow:hidden; }
+  .comp-fill{ height:100%; background:var(--green); border-radius:100px; }
+
+  .tool-cat{ margin-bottom:18px; }
+  .cat-label{ font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--coral); font-weight:700; margin-bottom:8px; text-transform:uppercase; }
+  .tool-chips{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tool-chips span{ background:var(--card); border:1px solid var(--line); font-size:12px; padding:6px 12px; border-radius:100px; }
+  .lang-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .lang-pill{ background:var(--green-soft); color:var(--green); font-family:var(--mono); font-weight:700; font-size:11.5px; padding:7px 13px; border-radius:100px; }
+
+  /* WORK — preview cards */
+  .proj-card{ display:block; width:100%; text-align:left; font:inherit; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 18px; margin-bottom:12px; position:relative; overflow:hidden; cursor:pointer; }
+  .proj-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; }
+  .p-green::before{ background:var(--green); } .p-gold::before{ background:var(--gold); } .p-coral::before{ background:var(--coral); }
+  .proj-card .idx{ font-family:var(--serif); font-size:13px; color:var(--ink-soft); font-weight:700; }
+  .proj-card h3{ font-family:var(--serif); font-size:17px; font-weight:600; margin-top:4px; }
+  .proj-card .sub{ font-size:12.5px; color:var(--ink-soft); margin-top:4px; line-height:1.5; }
+  .proj-meta{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .proj-meta span{ font-family:var(--mono); font-size:9.5px; padding:4px 9px; border-radius:100px; border:1px solid var(--line); color:var(--ink-soft); }
+  .view-more{ margin-top:12px; font-family:var(--mono); font-size:11px; font-weight:700; color:var(--coral); }
+
+  .side-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; margin-bottom:12px; }
+  .side-card h4{ font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:6px; }
+  .side-card p{ font-size:12.5px; line-height:1.6; color:var(--ink-soft); margin-bottom:10px; }
+  .side-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .side-tags span{ font-size:10.5px; border:1px solid var(--line); padding:4px 9px; border-radius:100px; color:var(--ink-soft); }
+  .side-link{ font-family:var(--mono); font-size:11px; font-weight:700; color:var(--green); text-decoration:none; }
+
+  .ov-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 16px; margin-bottom:8px; }
+  .ov-card .t{ font-family:var(--serif); font-weight:700; font-size:13.5px; }
+  .ov-card .r{ font-family:var(--mono); font-size:10px; color:var(--ink-soft); margin-top:4px; }
+  .ov-card .k{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.5; }
+  .ov-card .res{ font-size:12px; color:var(--green); font-weight:600; margin-top:6px; }
+
+  /* DETAIL OVERLAY */
+  .detail{ position:absolute; inset:0; background:var(--paper); display:none; flex-direction:column; z-index:30; }
+  .detail.active{ display:flex; }
+  .detail-header{ flex-shrink:0; display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--line); }
+  .back-btn{ background:var(--card); border:1px solid var(--line); color:var(--ink); border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; flex-shrink:0; }
+  .detail-header h3{ font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.3; }
+  .detail-body{ flex:1; overflow-y:auto; padding:18px 20px 30px; }
+
+  .p-block-label{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--green); font-weight:700; margin:18px 0 8px; }
+  .p-block-label:first-child{ margin-top:0; }
+  .p-goal{ font-size:13.5px; line-height:1.75; color:var(--ink-soft); }
+  .p-list{ list-style:none; }
+  .p-list li{ font-size:13px; line-height:1.65; padding-left:16px; position:relative; margin-bottom:5px; color:var(--ink-soft); }
+  .p-list li::before{ content:"·"; position:absolute; left:0; color:var(--coral); font-weight:900; }
+  .p-action li::before{ content:"→"; }
+  .p-role-row{ display:flex; flex-wrap:wrap; gap:7px; margin-top:2px; }
+  .p-role-row span{ background:var(--card); border:1px solid var(--line); font-size:11px; padding:5px 10px; border-radius:100px; }
+  .p-result{ background:var(--green-soft); border-radius:14px; padding:14px 16px; margin-top:6px; }
+  .p-result ul{ list-style:none; }
+  .p-result li{ font-size:13px; line-height:1.65; padding-left:18px; position:relative; margin-bottom:5px; color:var(--ink); font-weight:500; }
+  .p-result li::before{ content:"✓"; position:absolute; left:0; color:var(--green); font-weight:700; }
+  .p-result li.award::before{ content:"🏆"; }
+  .p-quote{ margin-top:16px; border-left:3px solid var(--gold); padding-left:12px; font-family:var(--serif); font-style:italic; font-size:13px; line-height:1.7; color:var(--ink-soft); }
+  .p-quote + .p-quote{ margin-top:10px; }
+  .badge-inline{ display:inline-flex; gap:6px; align-items:center; background:var(--green-soft); color:var(--green); font-family:var(--mono); font-size:10.5px; font-weight:700; padding:5px 11px; border-radius:100px; margin-bottom:14px; }
+
+  /* ABOUT */
+  .value-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+  .value-card h4{ font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--green); }
+  .value-card ul{ list-style:none; }
+  .value-card li{ font-size:12.5px; line-height:1.65; padding-left:14px; position:relative; margin-bottom:4px; color:var(--ink-soft); }
+  .value-card li::before{ content:"—"; position:absolute; left:0; color:var(--coral); }
+  .values-quote{ margin-top:14px; text-align:center; font-family:var(--serif); font-style:italic; font-size:14px; color:var(--green); line-height:1.6; }
+  .values-quote span{ display:block; margin-top:8px; font-family:var(--mono); font-style:normal; font-size:11px; color:var(--ink-soft); }
+
+  .edu-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+  .edu-card h3{ font-family:var(--serif); font-weight:600; font-size:15.5px; }
+  .edu-org{ color:var(--green); font-weight:600; margin-top:4px; font-size:12.5px; }
+  .edu-time{ font-family:var(--mono); font-size:10.5px; background:var(--gold-soft); color:var(--gold-ink); padding:5px 10px; border-radius:100px; display:inline-block; margin-top:8px; }
+  .edu-note{ margin-top:12px; font-size:12.5px; line-height:1.65; color:var(--ink-soft); border-left:3px solid var(--gold); padding-left:12px; }
+  .course-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .course-tags span{ font-size:11px; border:1px solid var(--line); padding:5px 10px; border-radius:100px; color:var(--ink-soft); }
+
+  .badges-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .badge-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 12px; text-align:center; }
+  .badge-card .ic{ font-size:21px; }
+  .badge-card h4{ font-family:var(--serif); font-size:12.5px; margin-top:8px; line-height:1.35; }
+  .badge-card p{ font-size:10px; color:var(--ink-soft); margin-top:5px; line-height:1.4; }
+
+  /* CONTACT */
+  .cta{ background:var(--ink); color:var(--paper); border-radius:20px; padding:32px 24px; text-align:center; }
+  .cta h2{ font-family:var(--serif); font-size:24px; font-weight:600; line-height:1.35; }
+  .cta h2 em{ color:var(--gold); font-style:italic; }
+  .cta p{ margin-top:12px; color:var(--on-ink); font-size:13px; }
+  .cta-btn{ display:inline-block; margin-top:20px; background:var(--coral); color:#fff; font-family:var(--mono); font-weight:700; font-size:12.5px; padding:13px 26px; border-radius:100px; text-decoration:none; user-select:all; }
+  .contact-list{ margin-top:18px; }
+  .contact-row{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; font-size:13px; user-select:text; }
+  footer.appfoot{ text-align:center; padding:20px 0 4px; font-family:var(--mono); font-size:10px; color:var(--ink-soft); }
+
+  /* On a real phone, drop the mockup frame and run full screen */
+  @media (max-width:480px){
+    body{ padding:0; background-image:none; background-color:var(--paper); }
+    .phone{ width:100%; height:100vh; height:100dvh; max-height:none; border:none; border-radius:0; box-shadow:none; }
+    .status-bar, .home-indicator{ display:none; }
+    .app-header{ padding-top:14px; padding-left:max(22px, env(safe-area-inset-left, 0px)); padding-right:max(22px, env(safe-area-inset-right, 0px)); }
+    .tabbar{ padding-bottom:max(6px, env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker{ animation:none; }
+    .screen.active{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="dots"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+  </div>
+
+  <div class="app-header">
+    <div>
+      <div class="eyebrow" id="headerEyebrow">포트폴리오</div>
+      <h2 id="headerTitle">홈</h2>
+    </div>
+    <div class="header-avatar">SC</div>
+  </div>
+
+  <div class="screen-area" id="screenArea">
+
+    <!-- HOME -->
+    <div class="screen active" data-screen="home">
+      <div class="profile-card">
+        <div class="profile-pic">SC</div>
+        <h1>최서은 — 호기심으로<br>세상을 연결하는 <em>글로벌 브릿지.</em></h1>
+        <div class="profile-role">가톨릭대학교 영어영문학과 &amp; 경영학과 · seunasu0916@gmail.com</div>
+        <div class="avail"><span class="dot"></span> 3–6개월 프로그램 지원 가능</div>
+      </div>
+
+      <p class="lede">사람들의 니즈와 시장 트렌드를 관찰하고, 이를 실질적인 전략과 구체적인 성과로 전환하는 능력이 저의 강점입니다.</p>
+      <p class="lede">국내외 다양한 프로젝트를 통해 기획, 데이터 분석, 콘텐츠 제작, 디지털 마케팅, 글로벌 협업까지 균형 잡힌 역량을 쌓아왔습니다. 이러한 경험을 바탕으로 국내외 시장에서 소비자와 기업을 연결하며 새로운 가치와 기회를 만들어가고자 합니다.</p>
+
+      <div class="tags-row">
+        <span class="tag">💡 문제 해결</span>
+        <span class="tag">👁 사용자 인사이트</span>
+        <span class="tag">✏️ 콘텐츠 기획</span>
+        <span class="tag">📣 디지털 마케팅</span>
+        <span class="tag">🌐 글로벌 커뮤니케이션</span>
+        <span class="tag">🚀 실행력</span>
+      </div>
+
+      <div class="sec-label">한눈에 보기</div>
+      <div class="quick-grid">
+        <button class="quick-card" type="button" onclick="showTab('work')"><div class="n">6+4</div><div class="l">프로젝트 &amp; 부트캠프 앱</div></button>
+        <button class="quick-card" type="button" onclick="showTab('about')"><div class="n">9</div><div class="l">수상 &amp; 자격증</div></button>
+      </div>
+
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker">
+          <span>시장 조사</span><span>캠페인 전략</span><span>콘텐츠 기획</span><span>데이터 분석</span><span>글로벌 커뮤니케이션</span><span>디지털 마케팅</span><span>UX &amp; 게이미피케이션</span>
+          <span>시장 조사</span><span>캠페인 전략</span><span>콘텐츠 기획</span><span>데이터 분석</span><span>글로벌 커뮤니케이션</span><span>디지털 마케팅</span><span>UX &amp; 게이미피케이션</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="screen" data-screen="skills">
+      <div class="sec-label" style="margin-top:0;">핵심 역량</div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>기획 및 문제 해결</span><span>90%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:90%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>협업 및 실행력</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>콘텐츠 기획 및 제작</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>디지털 마케팅</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>글로벌 커뮤니케이션</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+
+      <div class="sec-label">툴 &amp; 스킬</div>
+      <div class="tool-cat">
+        <div class="cat-label">디자인 / 콘텐츠</div>
+        <div class="tool-chips"><span>Canva</span><span>Figma</span><span>Adobe Premiere Pro</span><span>CapCut</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">기획 / 업무</div>
+        <div class="tool-chips"><span>PowerPoint</span><span>Word</span><span>Excel</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">AI 툴</div>
+        <div class="tool-chips"><span>Codex</span><span>Claude Code</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">마케팅</div>
+        <div class="tool-chips"><span>Meta 광고</span><span>시장 조사</span><span>콘텐츠 기획</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">언어</div>
+        <div class="lang-row">
+          <span class="lang-pill">한국어 · 원어민</span>
+          <span class="lang-pill">영어 · 회화 가능</span>
+          <span class="lang-pill">프랑스어 · 초급</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORK -->
+    <div class="screen" data-screen="work">
+      <div class="sec-label" style="margin-top:0;">프로젝트</div>
+
+      <button class="proj-card p-green" type="button" onclick="openDetail('proj1')">
+        <div class="idx">03-1</div>
+        <h3>Tridge — Growth Solution Team</h3>
+        <div class="sub">Korea Team 내에서 해외 수출 운영 및 바이어 관계를 지원</div>
+        <div class="proj-meta"><span>해외수출 코디네이터 (인턴)</span><span>2026.7 – 2026.10</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <button class="proj-card p-gold" type="button" onclick="openDetail('proj2')">
+        <div class="idx">03-2</div>
+        <h3>K-QUEST 지역 관광 플랫폼</h3>
+        <div class="sub">외국인 관광객을 위한 퀘스트 기반 인터랙티브 관광 플랫폼</div>
+        <div class="proj-meta"><span>영어영문학과 동아리 프로젝트</span><span>2026.3 – 6</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <button class="proj-card p-coral" type="button" onclick="openDetail('proj3')">
+        <div class="idx">03-3</div>
+        <h3>KOTRA deXters 디지털 마케팅</h3>
+        <div class="sub">디지털 무역 기반 해외 진출 프로젝트</div>
+        <div class="proj-meta"><span>디지털 마케터</span><span>2025.8 – 10</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <button class="proj-card p-green" type="button" onclick="openDetail('proj4')">
+        <div class="idx">03-4</div>
+        <h3>프랑스 교환학생 + LOVEBOOM</h3>
+        <div class="sub">반려동물 패션 브랜드의 해외 진출 전략</div>
+        <div class="proj-meta"><span>글로벌 팀 프로젝트</span><span>2024.9 – 12</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <button class="proj-card p-gold" type="button" onclick="openDetail('proj5')">
+        <div class="idx">03-5</div>
+        <h3>AI 국제결혼 매칭 서비스</h3>
+        <div class="sub">AI-DTC 기반 글로벌 매칭 플랫폼 기획</div>
+        <div class="proj-meta"><span>CBO (비즈니스 총괄)</span><span>2024.3 – 6</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <button class="proj-card p-coral" type="button" onclick="openDetail('proj6')">
+        <div class="idx">03-6</div>
+        <h3>SIGNAL 영상 연합동아리</h3>
+        <div class="sub">영상 콘텐츠 제작 및 기획 프로젝트</div>
+        <div class="proj-meta"><span>기획 · 촬영 · 편집</span><span>2023.2 – 2024.2</span></div>
+        <div class="view-more">자세히 보기 →</div>
+      </button>
+
+      <div class="sec-label">요약 보기</div>
+      <div class="ov-card"><div class="t">Tridge</div><div class="r">2026.7–2026.10 · 해외수출 코디네이터 (인턴)</div><div class="k">수출사업계획서, 콜드메일·바이어미팅, 해외영업, 마케팅 콘텐츠 제작, 디지털 마케팅(Pavilion)</div><div class="res">식품 등록·홍보 및 B2B 콘텐츠 제작</div></div>
+      <div class="ov-card"><div class="t">AI 결혼 매칭</div><div class="r">2024.3–6 · CBO (비즈니스 총괄)</div><div class="k">UX 설계, 매칭 로직, 시장 조사</div><div class="res">Startup 300+ 통과, 장려상 수상</div></div>
+      <div class="ov-card"><div class="t">KOTRA deXters</div><div class="r">2025.8–10 · 디지털 마케터</div><div class="k">Meta 광고, 시장 조사, 리드 확보</div><div class="res">해외 리드 4건, 보고서 3건</div></div>
+      <div class="ov-card"><div class="t">SIGNAL Club</div><div class="r">2023.2–2024.2 · 기획·촬영·편집</div><div class="k">광고, MV, 단편영화 제작</div><div class="res">최고 조회수 1.1천회</div></div>
+      <div class="ov-card"><div class="t">LOVEBOOM (교환학생)</div><div class="r">2024.9–12 · 전략 기획</div><div class="k">SWOT·PESTLE·문화차원 분석</div><div class="res">글로벌 팀 전략 경험</div></div>
+      <div class="ov-card"><div class="t">K-QUEST</div><div class="r">2026.3–6 · 서비스 기획</div><div class="k">UX 설계, 퀘스트 기획, 프로토타입</div><div class="res">대상·우수상, 모두의창업 1차 진출</div></div>
+
+      <div class="sec-label">🤖 AI 부트캠프 앱</div>
+      <div class="side-card">
+        <h4>BuyNow?</h4>
+        <p>생산자물가지수 데이터를 기반으로 한 장보기 타이밍 앱 — 이번 달 가격 변동이 큰 품목 순위를 보여주고, 현재 가장 저렴한 제철 식재료를 알려주며, 찜 목록, 알림, 가격 연동 레시피 추천 기능을 제공합니다.</p>
+        <div class="side-tags"><span>데이터 기반 인사이트</span><span>소비자 의사결정 지원</span></div>
+        <a class="side-link" href="https://buynow-green-seven.vercel.app" target="_blank" rel="noopener">앱 보러가기 →</a>
+      </div>
+      <div class="side-card">
+        <h4>Bee &amp; Badger's College Culture Quiz</h4>
+        <p>두 마스코트 캐릭터가 안내하는, 한국 대학 문화와 상식을 배우는 게이미피케이션 퀴즈 앱입니다. 학습 진행 상황을 기록하는 수집형 '여행 여권' 기능이 있습니다.</p>
+        <div class="side-tags"><span>캐릭터 기획</span><span>학습 게이미피케이션</span></div>
+        <a class="side-link" href="https://jazzy-gelato-01dc66.netlify.app" target="_blank" rel="noopener">앱 보러가기 →</a>
+      </div>
+      <div class="side-card">
+        <h4>Subway Aphorism Line</h4>
+        <p>지하철을 테마로 한 마이크로러닝 게임입니다. 각 '정거장'마다 세계 명언의 원문, 한국어 번역, 의미가 공개되고, 이어서 누가 한 말인지 맞히는 퀴즈가 진행됩니다.</p>
+        <div class="side-tags"><span>마이크로러닝</span><span>콘텐츠 큐레이션</span></div>
+        <a class="side-link" href="https://seunasu0916-ui.github.io/game_quote-subway/" target="_blank" rel="noopener">앱 보러가기 →</a>
+      </div>
+      <div class="side-card">
+        <h4>K-QUEST</h4>
+        <p>위 퀘스트 기반 관광 플랫폼의 인터랙티브 프로토타입 — 지도 기반 UI, 사진 인증, 지역 상점 보상과 연계된 XP/뱃지 시스템을 갖췄습니다.</p>
+        <div class="side-tags"><span>서비스 기획</span><span>지역 상점 연계</span></div>
+        <a class="side-link" href="https://quest-korea-go.lovable.app" target="_blank" rel="noopener">앱 보러가기 →</a>
+      </div>
+    </div>
+
+    <!-- ABOUT (Values + Education + Awards) -->
+    <div class="screen" data-screen="about">
+      <div class="sec-label" style="margin-top:0;">강점 &amp; 가치관</div>
+      <div class="value-card">
+        <h4>호기심 중심</h4>
+        <ul><li>사람들의 행동과 반응을 관찰하는 습관</li><li>핵심 인사이트에 도달할 때까지 끊임없이 "왜"를 묻는 태도</li><li>트렌드와 문화적 흐름에 대한 강한 관심</li><li>사용자 중심의 사고와 관점 전환</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>아이디어에서 실행까지</h4>
+        <ul><li>아이디어를 실행 가능한 계획으로 구조화</li><li>지속적인 반복과 개선을 통한 빠른 실행</li><li>직접 구현하고 실전 테스트하며 배우는 방식</li><li>눈에 보이는 결과에 집중하는 성과 지향적 태도</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>유연함과 열린 마음</h4>
+        <ul><li>새로운 환경에 빠르게 적응하는 능력</li><li>다양한 관점과 아이디어에 대한 개방성</li><li>유연하고 효과적인 커뮤니케이션 능력</li><li>팀워크에 기반한 협력적 문제 해결 방식</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>경험 중심 사고</h4>
+        <ul><li>경험을 바탕으로 한 문제 해결 및 설계 접근</li><li>몰입감 있고 매력적인 사용자 플로우 강조</li><li>개별 디테일보다 전체 맥락에 집중</li><li>유기적으로 연결된 사용자 경험 설계에 대한 몰입</li></ul>
+      </div>
+      <p class="values-quote">"사람들의 니즈를 발견하고, 이를 더 나은 경험과 의미 있는 콘텐츠로 만들어가는 일에 열정을 가지고 있습니다."<span>— 최서은</span></p>
+
+      <div class="sec-label">학력</div>
+      <div class="edu-card">
+        <h3>영어영문학 / 경영학 학사</h3>
+        <div class="edu-org">가톨릭대학교 — 대한민국 부천</div>
+        <div class="edu-time">2022년 3월 – 2027년 2월</div>
+        <div class="course-tags">
+          <span>세일즈 협상</span><span>마케팅 심리학</span><span>소셜미디어 마케팅</span>
+          <span>인터넷 및 모바일 마케팅</span><span>프로젝트 매니지먼트</span><span>홍보(PR)</span>
+          <span>리더십 개발</span><span>경영경제학</span><span>마케팅 및 크리에이티브 전략</span>
+        </div>
+      </div>
+      <div class="edu-card">
+        <h3>교환학생 프로그램 — 경영학, 국제경영학</h3>
+        <div class="edu-org">IÉSEG 경영대학원 &amp; ESTICE 국제경영대학 — 프랑스 릴</div>
+        <div class="edu-time">2024 – 2025 · 6개월</div>
+        <p class="edu-note">🌍 국제경영을 중심으로 한 해외 교환학기로, LOVEBOOM 케이스 스터디에 활용된 다문화 협업 및 현지 시장 분석 역량을 키웠습니다.</p>
+      </div>
+
+      <div class="sec-label">수상 &amp; 자격증</div>
+      <div class="badges-row">
+        <div class="badge-card"><div class="ic">🥇</div><h4>대상 — 영어영문학과 학생 창의 아이디어 공모전</h4><p>가톨릭대학교</p></div>
+        <div class="badge-card"><div class="ic">🥈</div><h4>우수상 — 가톨릭대학교 혁신 아이디어 공모전</h4><p>가톨릭대학교</p></div>
+        <div class="badge-card"><div class="ic">🎖️</div><h4>캡스톤 디자인 — 장려상</h4><p>가톨릭대학교, 2024년 봄학기</p></div>
+        <div class="badge-card"><div class="ic">🚀</div><h4>스타트업 프로그램 — 1차 선발</h4><p>Startup 300+ Growth Track</p></div>
+        <div class="badge-card"><div class="ic">🌐</div><h4>KOTRA deXters 수료증</h4><p>KOTRA · 8주, 2025년 8–10월</p></div>
+        <div class="badge-card"><div class="ic">🎓</div><h4>AI 콘텐츠 제작 강사 양성과정</h4><p>과정 수료증</p></div>
+        <div class="badge-card"><div class="ic">🤖</div><h4>몰입형 AI 부트캠프</h4><p>과정 수료증</p></div>
+        <div class="badge-card"><div class="ic">📚</div><h4>저자 — "Korea, Unfiltered" (Amazon)</h4><p>한국 대학생의 시선으로 쓴 독립 출판 도서</p></div>
+        <div class="badge-card"><div class="ic">🎬</div><h4>AI 뮤직비디오 — Acron으로 제작</h4><p>AI 기반 영상 제작</p></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="screen" data-screen="contact">
+      <div class="cta">
+        <h2>함께 성장할<br>무언가를 <em>만들어가요</em>.</h2>
+        <p>3–6개월 프로그램 지원 가능 · 대한민국 서울</p>
+        <a class="cta-btn" href="mailto:seunasu0916@gmail.com">seunasu0916@gmail.com</a>
+      </div>
+      <div class="contact-list">
+        <div class="contact-row">✉️ &nbsp; seunasu0916@gmail.com</div>
+        <div class="contact-row">📍 &nbsp; 대한민국 서울</div>
+      </div>
+      <footer class="appfoot">© 최서은 — 마케팅 &amp; 비즈니스 전략 포트폴리오</footer>
+    </div>
+
+    <!-- PROJECT DETAIL OVERLAYS -->
+    <div class="detail" id="detail-proj1">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>Tridge — Growth Solution Team</h3></div>
+      <div class="detail-body">
+        <span class="badge-inline">2026.7 – 2026.10 · 근무 완료</span>
+        <div class="p-block-label">🎯 역할 개요</div>
+        <p class="p-goal">Tridge Growth Solution 부문의 Korea Team에서 근무하며, 한국 기업들의 해외 수출을 지원하고 해외 바이어와 연결하며 무역 관련 업무를 조율했습니다.</p>
+        <div class="p-block-label">⚡ 주요 업무</div>
+        <ul class="p-list p-action">
+          <li>해외 진출을 준비하는 고객사를 위한 수출사업계획서 작성</li>
+          <li>해외 바이어 대상 콜드메일 발송 및 바이어 미팅 참여, 커뮤니케이션·거래 조율 지원</li>
+          <li>한국 공급업체와 해외 바이어를 연결하는 해외영업 지원</li>
+          <li>의성군, 제주도 등 지자체 무역 카탈로그, 팸플릿, 기업 홍보 영상, 카드뉴스·뉴스레터 등 B2B 마케팅 콘텐츠 제작</li>
+          <li>자체 수출 플랫폼 Pavilion에 국내 식품을 등록·홍보하는 디지털 마케팅 업무 수행</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할</div>
+        <div class="p-role-row"><span>수출사업계획서 작성</span><span>콜드메일·바이어 미팅</span><span>해외영업</span><span>카탈로그·팸플릿·홍보영상·카드뉴스·뉴스레터 제작</span><span>디지털 마케팅 (Pavilion 플랫폼)</span></div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj2">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>K-QUEST 지역 관광 플랫폼</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 프로젝트 목표</div>
+        <p class="p-goal">외국인 관광객이 주요 명소를 수동적으로 관람하는 데 그치지 않고, 한국의 지역 문화를 능동적으로 체험할 수 있도록 퀘스트 기반의 인터랙티브 관광 플랫폼을 기획했습니다. 기존의 정보 전달형 관광 플랫폼을 게임처럼 상호작용하는 여행 경험으로 재구성했습니다.</p>
+        <div class="p-block-label">⚠️ 문제 인식</div>
+        <ul class="p-list"><li>주요 관광지 중심의 반복적인 여행 동선</li><li>수동적인 여행 정보 소비</li><li>지역 상점 및 커뮤니티와의 약한 연결</li><li>언어 장벽과 부족한 현지화 브랜딩</li></ul>
+        <div class="p-block-label">🔍 집중한 부분</div>
+        <ul class="p-list"><li>사용자 참여형 관광 경험 모델 설계</li><li>지역 문화 몰입에 초점을 둔 참여형 관광 도입</li><li>몰입도와 동기부여를 높이기 위한 게이미피케이션 적용</li><li>경험 공유를 위한 커뮤니티 기능 통합</li><li>지역 상점 및 상권과의 연결 강화</li></ul>
+        <div class="p-block-label">⚡ 실행 내용</div>
+        <ul class="p-list p-action">
+          <li>외국인 관광객의 트렌드와 행동 패턴 분석</li>
+          <li>퀘스트 기반의 인터랙티브 관광 경험 구조 설계</li>
+          <li>사진 인증 및 XP/뱃지 시스템을 갖춘 지도 기반 UI 컨셉 개발</li>
+          <li>지역 상점과 연계된 보상 시스템 설계</li>
+          <li>Lovable을 활용해 앱 프로토타입 제작</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할</div>
+        <div class="p-role-row"><span>서비스 아이디어 구상 및 컨셉 개발</span><span>UX 구조 설계</span><span>퀘스트 기반 콘텐츠 기획</span><span>관광 트렌드 리서치</span><span>앱 프로토타입 개발 (Lovable)</span></div>
+        <div class="p-block-label">🏆 성과</div>
+        <div class="p-result">
+          <ul>
+            <li>참여형 관광 플랫폼 설계 완료</li>
+            <li>XP 및 뱃지 시스템을 갖춘 지도 기반 UI 설계</li>
+            <li>실제 작동하는 앱 프로토타입 개발</li>
+            <li class="award">우수상 — 가톨릭대학교 혁신 아이디어 공모전</li>
+            <li class="award">대상 — 영어영문학과 학생 창의 아이디어 공모전</li>
+            <li class="award">모두의창업 1차 진출</li>
+          </ul>
+        </div>
+        <div class="p-quote">"같은 공간이라도 경험을 어떻게 설계하느냐에 따라 사용자의 몰입도와 만족도가 크게 달라질 수 있다는 것을 배웠습니다."</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj3">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>KOTRA deXters 디지털 마케팅</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 프로젝트 목표</div>
+        <p class="p-goal">디지털 무역 플랫폼과 Meta 광고를 활용해 국내 기업의 해외 진출을 지원하고, 실제 바이어 확보 및 연결을 이끌어내는 것을 목표로 했습니다.</p>
+        <div class="p-block-label">⚠️ 문제 인식</div>
+        <ul class="p-list"><li>국가별 소비자 행동 차이</li><li>수출 규제 및 컴플라이언스의 복잡성</li><li>광고 운영 및 최적화 실무 경험 부족</li><li>해외 리드 발굴 및 확보의 어려움</li></ul>
+        <div class="p-block-label">🔍 집중한 부분</div>
+        <ul class="p-list"><li>현지 소비자 반응 기반 전략 수립</li><li>국가별 소비 패턴 분석</li><li>현지 시장 트렌드 리서치</li><li>건강보조식품에 대한 인식 차이 파악</li><li>광고 캠페인 타겟 오디언스 적합성 평가</li></ul>
+        <div class="p-block-label">⚡ 실행 내용</div>
+        <ul class="p-list p-action">
+          <li>카자흐스탄 시장 조사 및 진출 전략 수립</li>
+          <li>Meta 광고 캠페인 집행 및 반복 최적화 (타겟팅, 입찰, 성과 분석, 랜딩페이지 개선)</li>
+          <li>buyKOREA 플랫폼 기반 랜딩페이지 제작</li>
+          <li>해외 리드 확보 및 성과 보고서 작성</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할</div>
+        <div class="p-role-row"><span>카자흐스탄 시장 조사</span><span>무역 보고서 작성</span><span>Meta 광고 캠페인 운영</span><span>랜딩페이지 제작</span><span>해외 리드 확보</span><span>광고 성과 분석</span></div>
+        <div class="p-block-label">🏆 성과</div>
+        <div class="p-result">
+          <ul>
+            <li>해외 리드 4건 확보</li>
+            <li>시장 조사 보고서 3건 작성</li>
+            <li>무역 통계 데이터 2건 분석</li>
+          </ul>
+        </div>
+        <div class="p-quote">"효과적인 광고는 단순 노출이 아니라 시장과 소비자 피드백에 맞춘 지속적인 최적화가 필요하다는 것을 깨달았습니다."</div>
+        <div class="p-quote">"예상치 못한 상황에서 빠른 문제 진단과 실행이 얼마나 중요한지 배웠습니다."</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj4">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>프랑스 교환학생 + LOVEBOOM</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 프로젝트 목표</div>
+        <p class="p-goal">반려동물 패션 브랜드 LOVEBOOM을 위해 국가별 소비자 문화와 시장 상황에 맞춘 해외 진출 전략을 수립했습니다.</p>
+        <div class="p-block-label">⚠️ 문제 인식</div>
+        <ul class="p-list"><li>국가별 소비자 문화 차이</li><li>구매 기준 및 브랜드 인식 차이</li><li>반려동물 양육 및 관련 라이프스타일의 문화적 차이</li><li>획일화된 전략으로는 글로벌 확장이 어려움</li></ul>
+        <div class="p-block-label">🔍 집중한 부분</div>
+        <ul class="p-list"><li>국가별 소비자 특성 분석</li><li>구매 행동에 영향을 미치는 문화적 차이 검토</li><li>현지 소비자 트렌드 리서치</li><li>브랜드 포지셔닝 전략 정의</li></ul>
+        <div class="p-block-label">⚡ 실행 내용</div>
+        <ul class="p-list p-action">
+          <li>일본과 그리스 간 비교 시장 분석 수행</li>
+          <li>SWOT, PESTLE, 홉스테드 문화차원 프레임워크 활용</li>
+          <li>현지 인사이트 기반 소비자 페르소나 개발</li>
+          <li>소셜미디어 중심 마케팅 전략 설계 및 발표</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할</div>
+        <div class="p-role-row"><span>시장 조사 및 분석 수행</span><span>전략 분석 프레임워크 적용</span><span>소비자 페르소나 개발</span><span>마케팅 전략 설계 및 발표</span></div>
+        <div class="p-block-label">🏆 성과</div>
+        <div class="p-result">
+          <ul>
+            <li>글로벌 팀 프로젝트 경험 축적</li>
+            <li>문화 및 시장 분석 역량 강화</li>
+            <li>소비자 중심 전략 설계 경험 축적</li>
+          </ul>
+        </div>
+        <div class="p-quote">"강력한 전략은 브랜드 메시지가 아니라 현지 소비자의 공감에서 시작된다는 것을 깨달았습니다."</div>
+        <div class="p-quote">"같은 제품이라도 시장과 문화에 따라 소비자 반응이 다르다는 것을 이해했습니다."</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj5">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>AI 국제결혼 매칭 서비스</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 프로젝트 목표</div>
+        <p class="p-goal">국제결혼 플랫폼에서 발생하는 정보 비대칭과 문화적 갈등을 해결하기 위해 신뢰할 수 있는 매칭 경험을 설계했습니다.</p>
+        <div class="p-block-label">⚠️ 문제 인식</div>
+        <ul class="p-list"><li>조건 중심의 매칭 구조</li><li>사용자 신뢰 부족</li><li>문화 및 언어 장벽</li><li>낮은 UX 완성도</li></ul>
+        <div class="p-block-label">🔍 집중한 부분</div>
+        <ul class="p-list"><li>사용자 중심 매칭 경험 설계</li><li>데이터 기반 신뢰성 확보</li><li>직관적인 UX 플로우</li><li>문화적 차이 완화</li><li>관계 지속가능성에 집중</li><li>사용자 불안 요소 감소</li></ul>
+        <div class="p-block-label">⚡ 실행 내용</div>
+        <ul class="p-list p-action">
+          <li>UX 플로우 설계: 회원가입 → 성격 테스트 → DTC → AI 매칭 → 문화 가이드</li>
+          <li>매칭 로직 개발: 성격 궁합 40% · 생활 습관 30% · 문화적 가치관 20% · 유전적 지표 10%</li>
+          <li>언어, 문화, 신뢰, 정보 비대칭 문제를 정의하는 페인포인트 분석 수행</li>
+          <li>차별화 전략 도출을 위한 시장 및 경쟁사 분석 수행</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할 · CBO</div>
+        <div class="p-role-row"><span>UX 플로우 설계</span><span>매칭 로직 설계</span><span>시장 규모 조사</span><span>경쟁사 분석</span><span>마케팅 전략 기획</span><span>발표 자료 제작</span></div>
+        <div class="p-block-label">🏆 성과</div>
+        <div class="p-result">
+          <ul>
+            <li class="award">Startup 300+ Growth Track 1차 선발</li>
+            <li class="award">캡스톤 디자인 장려상 수상</li>
+            <li>서비스 기획 전 과정 리딩 경험 축적</li>
+            <li>시장 조사, UX 설계, 서비스 구조화 경험 강화</li>
+          </ul>
+        </div>
+        <div class="p-quote">"좋은 서비스는 기능보다 신뢰를 쌓는 사용자 경험 설계에서 나온다는 것을 깨달았습니다."</div>
+        <div class="p-quote">"사용자의 불안 요소와 페인포인트를 정의하는 것이 서비스 기획의 핵심이라는 것을 알게 되었습니다."</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj6">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="뒤로">←</button><h3>SIGNAL 영상 연합동아리</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 프로젝트 목표</div>
+        <p class="p-goal">뮤직비디오, 광고, 단편영화, 예능 프로그램 등 다양한 영상 콘텐츠의 기획부터 촬영, 편집까지 전 과정을 경험했습니다. 어떤 콘텐츠와 메시지가 시청자에게 공감을 얻고 몰입을 이끌어내는지 탐구했습니다.</p>
+        <div class="p-block-label">⚠️ 문제 인식</div>
+        <ul class="p-list"><li>아이디어를 완성된 콘텐츠로 구현하는 과정</li><li>팀 내 의견 조율</li><li>기획부터 촬영, 편집까지 전 과정을 주도적으로 이끄는 것</li></ul>
+        <div class="p-block-label">🔍 집중한 부분</div>
+        <ul class="p-list"><li>시청자 반응과 몰입 패턴을 기반으로 콘텐츠 개발</li><li>공감할 수 있는 상황과 감정에 집중</li><li>콘텐츠 몰입도와 스토리텔링 임팩트 강화</li><li>포맷 전반에 걸친 메시지 일관성 유지</li><li>문화적·시대적 트렌드에 기반한 주제 선정</li></ul>
+        <div class="p-block-label">⚡ 실행 내용</div>
+        <ul class="p-list p-action">
+          <li>광고, 뮤직비디오, 예능, 단편영화 4개 장르의 콘텐츠 제작에 참여</li>
+          <li>컨셉 기획, 스토리보드, 촬영, 편집, 피드백 반영까지 전 제작 과정을 독립적으로 수행</li>
+          <li>SNS와 현실의 괴리를 다룬 단편영화 "아웃포커싱"을 제작하여 SNS에서 1,100회 조회수를 기록</li>
+        </ul>
+        <div class="p-block-label">👤 담당 역할</div>
+        <div class="p-role-row"><span>콘텐츠 기획 및 스토리보드 제작</span><span>촬영 및 영상 편집</span><span>배우 캐스팅 및 촬영 장소 섭외</span><span>일정 조율 및 출연</span></div>
+        <div class="p-block-label">🏆 성과</div>
+        <div class="p-result">
+          <ul>
+            <li>단편영화 "아웃포커싱" 조회수 1,100회 달성</li>
+            <li>초기 대비 약 2배 조회수 증가</li>
+            <li>광고, 단편영화, 예능, 뮤직비디오 4개 장르 영상 제작 완료</li>
+          </ul>
+        </div>
+        <div class="p-quote">"시청자의 몰입을 이끄는 것은 화려한 영상미보다 공감이라는 것을 깨달았습니다."</div>
+        <div class="p-quote">"콘텐츠 제작은 기획, 실행, 협업, 개선을 반복하는 과정이라는 것을 이해했습니다."</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tabbar" role="tablist">
+    <button class="tab-btn active" type="button" data-tab="home" onclick="showTab('home')"><span class="ic">🏠</span>홈</button>
+    <button class="tab-btn" type="button" data-tab="skills" onclick="showTab('skills')"><span class="ic">📊</span>역량</button>
+    <button class="tab-btn" type="button" data-tab="work" onclick="showTab('work')"><span class="ic">💼</span>프로젝트</button>
+    <button class="tab-btn" type="button" data-tab="about" onclick="showTab('about')"><span class="ic">👤</span>소개</button>
+    <button class="tab-btn" type="button" data-tab="contact" onclick="showTab('contact')"><span class="ic">✉️</span>연락처</button>
+  </div>
+  <div class="home-indicator"><span></span></div>
+</div>
+
+<script>
+  const titles = { home:['포트폴리오','홈'], skills:['포트폴리오','역량'], work:['포트폴리오','프로젝트'], about:['포트폴리오','소개'], contact:['포트폴리오','연락처'] };
+
+  function showTab(name){
+    if(!titles[name]) return;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelector('.screen[data-screen="'+name+'"]').classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tab-btn[data-tab="'+name+'"]').classList.add('active');
+    closeDetail();
+    document.getElementById('headerEyebrow').textContent = titles[name][0];
+    document.getElementById('headerTitle').textContent = titles[name][1];
+    document.getElementById('screenArea').scrollTop = 0;
+  }
+
+  function openDetail(id){
+    const area = document.getElementById('screenArea');
+    area.scrollTop = 0;
+    area.style.overflow = 'hidden';
+    document.getElementById('detail-'+id).classList.add('active');
+  }
+
+  function closeDetail(){
+    document.querySelectorAll('.detail').forEach(d => d.classList.remove('active'));
+    document.getElementById('screenArea').style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
+
+  // Open a tab from a plain #anchor (e.g. #work)
+  const start = (location.hash || '').replace('#','');
+  if(titles[start]) showTab(start);
+</script>
+
+</body>
+</html>
