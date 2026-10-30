@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seoeun Choi Portfolio App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  /* Phone-app mockup of the portfolio: one deliberate light look (paper + ink + green/gold/coral) */
+  :root{
+    color-scheme: light;
+    --desk:#EFEAE0;
+    --paper:#F6F3EA;
+    --card:#FFFFFF;
+    --ink:#1D241E;
+    --ink-soft:#5B6259;
+    --green:#2E5541;
+    --green-soft:#DEE7DC;
+    --gold:#E3A73B;
+    --gold-soft:#F7E7C6;
+    --gold-ink:#7A5613;
+    --coral:#FF5A44;
+    --line:#DAD3C1;
+    --on-ink:#C8CBC4;
+    --serif:'Fraunces', 'Noto Serif KR', 'AppleMyungjo', serif;
+    --sans:'Work Sans', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    --mono:'Space Mono', 'Apple SD Gothic Neo', 'Noto Sans KR', monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background-color:var(--desk);
+    background-image:
+      linear-gradient(rgba(46,85,65,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,85,65,0.06) 1px, transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink); font-family:var(--sans);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding-block:36px;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));
+    padding-right:max(16px, env(safe-area-inset-right, 0px));
+    min-height:100%;
+  }
+
+  /* PHONE SHELL */
+  .phone{
+    width:390px; max-width:100%; height:844px; max-height:calc(100vh - 72px);
+    background:var(--paper); border:10px solid var(--ink); border-radius:46px;
+    box-shadow:0 30px 70px rgba(29,36,30,0.28);
+    overflow:hidden; position:relative; display:flex; flex-direction:column;
+  }
+  .status-bar{
+    flex-shrink:0; height:40px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px; font-family:var(--mono); font-size:12.5px; font-weight:700;
+  }
+  .status-bar .dots{ display:flex; gap:4px; align-items:flex-end; }
+  .status-bar .bar{ width:3px; background:var(--ink); border-radius:1px; }
+  .status-bar .bar:nth-child(1){ height:5px; } .status-bar .bar:nth-child(2){ height:7px; }
+  .status-bar .bar:nth-child(3){ height:9px; } .status-bar .bar:nth-child(4){ height:11px; }
+
+  .app-header{
+    flex-shrink:0; padding:6px 22px 16px; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line);
+  }
+  .app-header h2{ font-family:var(--serif); font-weight:600; font-size:21px; }
+  .app-header .eyebrow{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); font-weight:700; }
+  .header-avatar{ width:34px; height:34px; border-radius:50%; background:var(--green); color:var(--paper); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:700; font-size:14px; }
+
+  .screen-area{ flex:1; overflow-y:auto; position:relative; -webkit-overflow-scrolling:touch; }
+  .screen{ display:none; padding:20px 22px 28px; }
+  .screen.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:.4; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  /* TAB BAR */
+  .tabbar{ flex-shrink:0; display:flex; background:var(--card); border-top:1px solid var(--line); padding-bottom:6px; }
+  .tab-btn{
+    flex:1; background:none; border:none; cursor:pointer; padding:9px 2px 4px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-family:var(--mono); font-size:9.5px; color:var(--ink-soft); font-weight:700;
+  }
+  .tab-btn .ic{ font-size:19px; line-height:1; }
+  .tab-btn.active{ color:var(--coral); }
+  .tab-btn:focus-visible, .back-btn:focus-visible, .proj-card:focus-visible, .quick-card:focus-visible, a:focus-visible{ outline:2px solid var(--coral); outline-offset:2px; }
+  .home-indicator{ flex-shrink:0; display:flex; justify-content:center; padding:8px 0 4px; background:var(--card); }
+  .home-indicator span{ width:120px; height:4px; border-radius:3px; background:var(--ink); opacity:.7; }
+
+  /* HOME */
+  .profile-card{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:26px 22px; text-align:center; }
+  .profile-pic{ width:64px; height:64px; border-radius:50%; background:var(--green); color:var(--paper); font-family:var(--serif); font-weight:700; font-size:24px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+  .profile-card h1{ font-family:var(--serif); font-weight:600; font-size:22px; line-height:1.3; text-wrap:balance; }
+  .profile-card h1 em{ font-style:italic; color:var(--green); }
+  .profile-role{ font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:10px; line-height:1.6; }
+  .avail{
+    margin-top:16px; display:inline-flex; gap:8px; align-items:center;
+    background:var(--paper); border:1px solid var(--line); padding:8px 14px; border-radius:100px;
+    font-family:var(--mono); font-size:11px;
+  }
+  .avail .dot{ width:7px; height:7px; border-radius:50%; background:var(--coral); }
+  .lede{ margin-top:16px; font-size:13.5px; line-height:1.75; color:var(--ink-soft); text-align:left; }
+  .lede + .lede{ margin-top:10px; }
+  .tags-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; justify-content:center; }
+  .tag{ background:var(--paper); border:1px solid var(--line); font-size:12px; font-weight:600; padding:7px 13px; border-radius:100px; }
+
+  .sec-label{ font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); font-weight:700; margin:26px 0 12px; }
+  .quick-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .quick-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; cursor:pointer; text-align:left; font:inherit; color:inherit; }
+  .quick-card .n{ font-family:var(--serif); font-size:20px; font-weight:700; color:var(--green); }
+  .quick-card .l{ font-size:11px; color:var(--ink-soft); margin-top:2px; }
+
+  .ticker-wrap{ margin-top:22px; border-radius:14px; overflow:hidden; background:var(--ink); }
+  .ticker{ display:flex; white-space:nowrap; animation:scroll 18s linear infinite; }
+  .ticker span{ font-family:var(--mono); font-size:11px; color:var(--paper); padding:12px 18px; }
+  .ticker span::after{ content:"◆"; margin-left:18px; color:var(--gold); }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* SKILLS */
+  .comp-bar{ margin-bottom:16px; }
+  .cb-top{ display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:6px; }
+  .cb-top span:last-child{ font-family:var(--mono); color:var(--green); }
+  .comp-track{ height:8px; background:var(--green-soft); border-radius:100px; overflow:hidden; }
+  .comp-fill{ height:100%; background:var(--green); border-radius:100px; }
+
+  .tool-cat{ margin-bottom:18px; }
+  .cat-label{ font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--coral); font-weight:700; margin-bottom:8px; text-transform:uppercase; }
+  .tool-chips{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tool-chips span{ background:var(--card); border:1px solid var(--line); font-size:12px; padding:6px 12px; border-radius:100px; }
+  .lang-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .lang-pill{ background:var(--green-soft); color:var(--green); font-family:var(--mono); font-weight:700; font-size:11.5px; padding:7px 13px; border-radius:100px; }
+
+  /* WORK — preview cards */
+  .proj-card{ display:block; width:100%; text-align:left; font:inherit; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 18px; margin-bottom:12px; position:relative; overflow:hidden; cursor:pointer; }
+  .proj-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; }
+  .p-green::before{ background:var(--green); } .p-gold::before{ background:var(--gold); } .p-coral::before{ background:var(--coral); }
+  .proj-card .idx{ font-family:var(--serif); font-size:13px; color:var(--ink-soft); font-weight:700; }
+  .proj-card h3{ font-family:var(--serif); font-size:17px; font-weight:600; margin-top:4px; }
+  .proj-card .sub{ font-size:12.5px; color:var(--ink-soft); margin-top:4px; line-height:1.5; }
+  .proj-meta{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .proj-meta span{ font-family:var(--mono); font-size:9.5px; padding:4px 9px; border-radius:100px; border:1px solid var(--line); color:var(--ink-soft); }
+  .view-more{ margin-top:12px; font-family:var(--mono); font-size:11px; font-weight:700; color:var(--coral); }
+
+  .side-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; margin-bottom:12px; }
+  .side-card h4{ font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:6px; }
+  .side-card p{ font-size:12.5px; line-height:1.6; color:var(--ink-soft); margin-bottom:10px; }
+  .side-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .side-tags span{ font-size:10.5px; border:1px solid var(--line); padding:4px 9px; border-radius:100px; color:var(--ink-soft); }
+  .side-link{ font-family:var(--mono); font-size:11px; font-weight:700; color:var(--green); text-decoration:none; }
+
+  .ov-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 16px; margin-bottom:8px; }
+  .ov-card .t{ font-family:var(--serif); font-weight:700; font-size:13.5px; }
+  .ov-card .r{ font-family:var(--mono); font-size:10px; color:var(--ink-soft); margin-top:4px; }
+  .ov-card .k{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.5; }
+  .ov-card .res{ font-size:12px; color:var(--green); font-weight:600; margin-top:6px; }
+
+  /* DETAIL OVERLAY */
+  .detail{ position:absolute; inset:0; background:var(--paper); display:none; flex-direction:column; z-index:30; }
+  .detail.active{ display:flex; }
+  .detail-header{ flex-shrink:0; display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--line); }
+  .back-btn{ background:var(--card); border:1px solid var(--line); color:var(--ink); border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; flex-shrink:0; }
+  .detail-header h3{ font-family:var(--serif); font-size:16.5px; font-weight:600; line-height:1.3; }
+  .detail-body{ flex:1; overflow-y:auto; padding:18px 20px 30px; }
+
+  .p-block-label{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--green); font-weight:700; margin:18px 0 8px; }
+  .p-block-label:first-child{ margin-top:0; }
+  .p-goal{ font-size:13.5px; line-height:1.75; color:var(--ink-soft); }
+  .p-list{ list-style:none; }
+  .p-list li{ font-size:13px; line-height:1.65; padding-left:16px; position:relative; margin-bottom:5px; color:var(--ink-soft); }
+  .p-list li::before{ content:"·"; position:absolute; left:0; color:var(--coral); font-weight:900; }
+  .p-action li::before{ content:"→"; }
+  .p-role-row{ display:flex; flex-wrap:wrap; gap:7px; margin-top:2px; }
+  .p-role-row span{ background:var(--card); border:1px solid var(--line); font-size:11px; padding:5px 10px; border-radius:100px; }
+  .p-result{ background:var(--green-soft); border-radius:14px; padding:14px 16px; margin-top:6px; }
+  .p-result ul{ list-style:none; }
+  .p-result li{ font-size:13px; line-height:1.65; padding-left:18px; position:relative; margin-bottom:5px; color:var(--ink); font-weight:500; }
+  .p-result li::before{ content:"✓"; position:absolute; left:0; color:var(--green); font-weight:700; }
+  .p-result li.award::before{ content:"🏆"; }
+  .p-quote{ margin-top:16px; border-left:3px solid var(--gold); padding-left:12px; font-family:var(--serif); font-style:italic; font-size:13px; line-height:1.7; color:var(--ink-soft); }
+  .p-quote + .p-quote{ margin-top:10px; }
+  .badge-inline{ display:inline-flex; gap:6px; align-items:center; background:var(--green-soft); color:var(--green); font-family:var(--mono); font-size:10.5px; font-weight:700; padding:5px 11px; border-radius:100px; margin-bottom:14px; }
+
+  /* ABOUT */
+  .value-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+  .value-card h4{ font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--green); }
+  .value-card ul{ list-style:none; }
+  .value-card li{ font-size:12.5px; line-height:1.65; padding-left:14px; position:relative; margin-bottom:4px; color:var(--ink-soft); }
+  .value-card li::before{ content:"—"; position:absolute; left:0; color:var(--coral); }
+  .values-quote{ margin-top:14px; text-align:center; font-family:var(--serif); font-style:italic; font-size:14px; color:var(--green); line-height:1.6; }
+  .values-quote span{ display:block; margin-top:8px; font-family:var(--mono); font-style:normal; font-size:11px; color:var(--ink-soft); }
+
+  .edu-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:12px; }
+  .edu-card h3{ font-family:var(--serif); font-weight:600; font-size:15.5px; }
+  .edu-org{ color:var(--green); font-weight:600; margin-top:4px; font-size:12.5px; }
+  .edu-time{ font-family:var(--mono); font-size:10.5px; background:var(--gold-soft); color:var(--gold-ink); padding:5px 10px; border-radius:100px; display:inline-block; margin-top:8px; }
+  .edu-note{ margin-top:12px; font-size:12.5px; line-height:1.65; color:var(--ink-soft); border-left:3px solid var(--gold); padding-left:12px; }
+  .course-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .course-tags span{ font-size:11px; border:1px solid var(--line); padding:5px 10px; border-radius:100px; color:var(--ink-soft); }
+
+  .badges-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .badge-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 12px; text-align:center; }
+  .badge-card .ic{ font-size:21px; }
+  .badge-card h4{ font-family:var(--serif); font-size:12.5px; margin-top:8px; line-height:1.35; }
+  .badge-card p{ font-size:10px; color:var(--ink-soft); margin-top:5px; line-height:1.4; }
+
+  /* CONTACT */
+  .cta{ background:var(--ink); color:var(--paper); border-radius:20px; padding:32px 24px; text-align:center; }
+  .cta h2{ font-family:var(--serif); font-size:24px; font-weight:600; line-height:1.35; }
+  .cta h2 em{ color:var(--gold); font-style:italic; }
+  .cta p{ margin-top:12px; color:var(--on-ink); font-size:13px; }
+  .cta-btn{ display:inline-block; margin-top:20px; background:var(--coral); color:#fff; font-family:var(--mono); font-weight:700; font-size:12.5px; padding:13px 26px; border-radius:100px; text-decoration:none; user-select:all; }
+  .contact-list{ margin-top:18px; }
+  .contact-row{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; font-size:13px; user-select:text; }
+  footer.appfoot{ text-align:center; padding:20px 0 4px; font-family:var(--mono); font-size:10px; color:var(--ink-soft); }
+
+  /* On a real phone, drop the mockup frame and run full screen */
+  @media (max-width:480px){
+    body{ padding:0; background-image:none; background-color:var(--paper); }
+    .phone{ width:100%; height:100vh; height:100dvh; max-height:none; border:none; border-radius:0; box-shadow:none; }
+    .status-bar, .home-indicator{ display:none; }
+    .app-header{ padding-top:14px; padding-left:max(22px, env(safe-area-inset-left, 0px)); padding-right:max(22px, env(safe-area-inset-right, 0px)); }
+    .tabbar{ padding-bottom:max(6px, env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker{ animation:none; }
+    .screen.active{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="dots"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+  </div>
+
+  <div class="app-header">
+    <div>
+      <div class="eyebrow" id="headerEyebrow">Portfolio</div>
+      <h2 id="headerTitle">Home</h2>
+    </div>
+    <div class="header-avatar">SC</div>
+  </div>
+
+  <div class="screen-area" id="screenArea">
+
+    <!-- HOME -->
+    <div class="screen active" data-screen="home">
+      <div class="profile-card">
+        <div class="profile-pic">SC</div>
+        <h1>Seoeun Choi — connecting<br>the world as a curious <em>global bridge.</em></h1>
+        <div class="profile-role">The Catholic University of Korea · English Language &amp; Literature and Business Administration · seunasu0916@gmail.com</div>
+        <div class="avail"><span class="dot"></span> Available for 3–6 month programs</div>
+      </div>
+
+      <p class="lede">My strength is observing people’s needs and market trends, then turning them into practical strategies and concrete results.</p>
+      <p class="lede">Through projects in Korea and abroad, I have built balanced skills across planning, data analysis, content creation, digital marketing, and global collaboration. I want to use this experience to connect consumers and companies in Korean and global markets and create new value and opportunities.</p>
+
+      <div class="tags-row">
+        <span class="tag">💡 Problem Solving</span>
+        <span class="tag">👁 User Insight</span>
+        <span class="tag">✏️ Content Planning</span>
+        <span class="tag">📣 Digital Marketing</span>
+        <span class="tag">🌐 Global Communication</span>
+        <span class="tag">🚀 Execution</span>
+      </div>
+
+      <div class="sec-label">At a Glance</div>
+      <div class="quick-grid">
+        <button class="quick-card" type="button" onclick="showTab('work')"><div class="n">6+4</div><div class="l">Projects &amp; Bootcamp Apps</div></button>
+        <button class="quick-card" type="button" onclick="showTab('about')"><div class="n">9</div><div class="l">Awards &amp; Certificates</div></button>
+      </div>
+
+      <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker">
+          <span>Market Research</span><span>Campaign Strategy</span><span>Content Planning</span><span>Data Analysis</span><span>Global Communication</span><span>Digital Marketing</span><span>UX &amp; Gamification</span>
+          <span>Market Research</span><span>Campaign Strategy</span><span>Content Planning</span><span>Data Analysis</span><span>Global Communication</span><span>Digital Marketing</span><span>UX &amp; Gamification</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="screen" data-screen="skills">
+      <div class="sec-label" style="margin-top:0;">Core Competencies</div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Planning &amp; Problem Solving</span><span>90%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:90%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Collaboration &amp; Execution</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Content Planning &amp; Production</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Digital Marketing</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Global Communication</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+
+      <div class="sec-label">Tools &amp; Skills</div>
+      <div class="tool-cat">
+        <div class="cat-label">Design / Content</div>
+        <div class="tool-chips"><span>Canva</span><span>Figma</span><span>Adobe Premiere Pro</span><span>CapCut</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Planning / Office</div>
+        <div class="tool-chips"><span>PowerPoint</span><span>Word</span><span>Excel</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">AI Tools</div>
+        <div class="tool-chips"><span>Codex</span><span>Claude Code</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Marketing</div>
+        <div class="tool-chips"><span>Meta Ads</span><span>Market Research</span><span>Content Planning</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Languages</div>
+        <div class="lang-row">
+          <span class="lang-pill">Korean · Native</span>
+          <span class="lang-pill">English · Conversational</span>
+          <span class="lang-pill">French · Beginner</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORK -->
+    <div class="screen" data-screen="work">
+      <div class="sec-label" style="margin-top:0;">Projects</div>
+
+      <button class="proj-card p-green" type="button" onclick="openDetail('proj1')">
+        <div class="idx">03-1</div>
+        <h3>Tridge — Growth Solution Team</h3>
+        <div class="sub">Supported export operations and buyer relations in the Korea Team</div>
+        <div class="proj-meta"><span>Export Coordinator (Intern)</span><span>2026.7 – 2026.10</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <button class="proj-card p-gold" type="button" onclick="openDetail('proj2')">
+        <div class="idx">03-2</div>
+        <h3>K-QUEST Local Tourism Platform</h3>
+        <div class="sub">A quest-based interactive travel platform for foreign tourists</div>
+        <div class="proj-meta"><span>English Department Club Project</span><span>2026.3 – 6</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <button class="proj-card p-coral" type="button" onclick="openDetail('proj3')">
+        <div class="idx">03-3</div>
+        <h3>KOTRA deXters Digital Marketing</h3>
+        <div class="sub">Digital-trade project for overseas market entry</div>
+        <div class="proj-meta"><span>Digital Marketer</span><span>2025.8 – 10</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <button class="proj-card p-green" type="button" onclick="openDetail('proj4')">
+        <div class="idx">03-4</div>
+        <h3>Exchange in France + LOVEBOOM</h3>
+        <div class="sub">Overseas expansion strategy for a pet fashion brand</div>
+        <div class="proj-meta"><span>Global Team Project</span><span>2024.9 – 12</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <button class="proj-card p-gold" type="button" onclick="openDetail('proj5')">
+        <div class="idx">03-5</div>
+        <h3>AI International Marriage Matching Service</h3>
+        <div class="sub">Planning a global matching platform built on AI and DTC</div>
+        <div class="proj-meta"><span>CBO (Chief Business Officer)</span><span>2024.3 – 6</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <button class="proj-card p-coral" type="button" onclick="openDetail('proj6')">
+        <div class="idx">03-6</div>
+        <h3>SIGNAL Inter-university Film Club</h3>
+        <div class="sub">Video content planning and production</div>
+        <div class="proj-meta"><span>Planning · Filming · Editing</span><span>2023.2 – 2024.2</span></div>
+        <div class="view-more">View details →</div>
+      </button>
+
+      <div class="sec-label">Summary</div>
+      <div class="ov-card"><div class="t">Tridge</div><div class="r">Jul 2026 – Oct 2026 · Export Coordinator (Intern)</div><div class="k">Export business plans, cold emails &amp; buyer meetings, overseas sales, marketing content, digital marketing (Pavilion)</div><div class="res">Food product listings &amp; B2B content production</div></div>
+      <div class="ov-card"><div class="t">AI Marriage Matching</div><div class="r">Mar – Jun 2024 · CBO (Chief Business Officer)</div><div class="k">UX design, matching logic, market research</div><div class="res">Startup 300+ selection, Encouragement Award</div></div>
+      <div class="ov-card"><div class="t">KOTRA deXters</div><div class="r">Aug – Oct 2025 · Digital Marketer</div><div class="k">Meta ads, market research, lead generation</div><div class="res">4 overseas leads, 3 reports</div></div>
+      <div class="ov-card"><div class="t">SIGNAL Club</div><div class="r">Feb 2023 – Feb 2024 · Planning · Filming · Editing</div><div class="k">Commercials, music videos, short films</div><div class="res">Top video: 1.1K views</div></div>
+      <div class="ov-card"><div class="t">LOVEBOOM (Exchange Program)</div><div class="r">Sep – Dec 2024 · Strategy Planning</div><div class="k">SWOT · PESTLE · cultural dimensions analysis</div><div class="res">Global team strategy experience</div></div>
+      <div class="ov-card"><div class="t">K-QUEST</div><div class="r">Mar – Jun 2026 · Service Planning</div><div class="k">UX design, quest planning, prototype</div><div class="res">Grand Prize &amp; Excellence Award; passed Modu-ui Changup round 1</div></div>
+
+      <div class="sec-label">🤖 AI Bootcamp Apps</div>
+      <div class="side-card">
+        <h4>BuyNow?</h4>
+        <p>A grocery-timing app built on producer price index data. It ranks the items with the biggest price changes this month, shows the cheapest seasonal ingredients right now, and offers a wishlist, alerts, and price-linked recipe suggestions.</p>
+        <div class="side-tags"><span>Data-driven insight</span><span>Consumer decision support</span></div>
+        <a class="side-link" href="https://buynow-green-seven.vercel.app" target="_blank" rel="noopener">View app →</a>
+      </div>
+      <div class="side-card">
+        <h4>Bee &amp; Badger's College Culture Quiz</h4>
+        <p>A gamified quiz app where two mascot characters teach Korean college culture and common knowledge. A collectible “travel passport” tracks learning progress.</p>
+        <div class="side-tags"><span>Character design</span><span>Gamified learning</span></div>
+        <a class="side-link" href="https://jazzy-gelato-01dc66.netlify.app" target="_blank" rel="noopener">View app →</a>
+      </div>
+      <div class="side-card">
+        <h4>Subway Aphorism Line</h4>
+        <p>A subway-themed microlearning game. At each “station,” a famous quote is revealed with its original text, Korean translation, and meaning, followed by a quiz on who said it.</p>
+        <div class="side-tags"><span>Microlearning</span><span>Content curation</span></div>
+        <a class="side-link" href="https://seunasu0916-ui.github.io/game_quote-subway/" target="_blank" rel="noopener">View app →</a>
+      </div>
+      <div class="side-card">
+        <h4>K-QUEST</h4>
+        <p>An interactive prototype of the quest-based travel platform above, with a map-based UI, photo verification, and an XP/badge system tied to rewards at local shops.</p>
+        <div class="side-tags"><span>Service planning</span><span>Local shop partnerships</span></div>
+        <a class="side-link" href="https://quest-korea-go.lovable.app" target="_blank" rel="noopener">View app →</a>
+      </div>
+    </div>
+
+    <!-- ABOUT (Values + Education + Awards) -->
+    <div class="screen" data-screen="about">
+      <div class="sec-label" style="margin-top:0;">Strengths &amp; Values</div>
+      <div class="value-card">
+        <h4>Curiosity First</h4>
+        <ul><li>A habit of observing how people behave and react</li><li>Asking “why” until I reach the core insight</li><li>Strong interest in trends and cultural shifts</li><li>User-centered thinking and shifting perspectives</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>From Idea to Execution</h4>
+        <ul><li>Structuring ideas into actionable plans</li><li>Moving fast through constant iteration and improvement</li><li>Learning by building and testing in practice</li><li>A results-driven focus on visible outcomes</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>Flexible and Open-minded</h4>
+        <ul><li>Adapting quickly to new environments</li><li>Openness to different perspectives and ideas</li><li>Flexible, effective communication</li><li>Collaborative, team-based problem solving</li></ul>
+      </div>
+      <div class="value-card">
+        <h4>Experience-driven Thinking</h4>
+        <ul><li>Designing solutions from real experience</li><li>Emphasis on immersive, engaging user flows</li><li>Focusing on the whole context over isolated details</li><li>Designing seamlessly connected user experiences</li></ul>
+      </div>
+      <p class="values-quote">“I am passionate about discovering what people need and turning it into better experiences and meaningful content.”<span>— Seoeun Choi</span></p>
+
+      <div class="sec-label">Education</div>
+      <div class="edu-card">
+        <h3>B.A. in English Language &amp; Literature / Business Administration</h3>
+        <div class="edu-org">The Catholic University of Korea — Bucheon, South Korea</div>
+        <div class="edu-time">Mar 2022 – Feb 2027</div>
+        <div class="course-tags">
+          <span>Sales Negotiation</span><span>Marketing Psychology</span><span>Social Media Marketing</span>
+          <span>Internet &amp; Mobile Marketing</span><span>Project Management</span><span>Public Relations</span>
+          <span>Leadership Development</span><span>Management Economics</span><span>Marketing &amp; Creative Strategy</span>
+        </div>
+      </div>
+      <div class="edu-card">
+        <h3>Exchange Program — Business Administration, International Business</h3>
+        <div class="edu-org">IÉSEG School of Management &amp; ESTICE International Business School — Lille, France</div>
+        <div class="edu-time">2024 – 2025 · 6 months</div>
+        <p class="edu-note">🌍 An exchange semester focused on international business, where I built the cross-cultural collaboration and local market analysis skills used in the LOVEBOOM case study.</p>
+      </div>
+
+      <div class="sec-label">Awards &amp; Certificates</div>
+      <div class="badges-row">
+        <div class="badge-card"><div class="ic">🥇</div><h4>Grand Prize — English Department Creative Idea Contest</h4><p>The Catholic University of Korea</p></div>
+        <div class="badge-card"><div class="ic">🥈</div><h4>Excellence Award — CUK Innovation Idea Contest</h4><p>The Catholic University of Korea</p></div>
+        <div class="badge-card"><div class="ic">🎖️</div><h4>Capstone Design — Encouragement Award</h4><p>The Catholic University of Korea, Spring 2024</p></div>
+        <div class="badge-card"><div class="ic">🚀</div><h4>Startup Program — First-round Selection</h4><p>Startup 300+ Growth Track</p></div>
+        <div class="badge-card"><div class="ic">🌐</div><h4>KOTRA deXters Certificate</h4><p>KOTRA · 8 weeks, Aug – Oct 2025</p></div>
+        <div class="badge-card"><div class="ic">🎓</div><h4>AI Content Creator Instructor Program</h4><p>Certificate of completion</p></div>
+        <div class="badge-card"><div class="ic">🤖</div><h4>Immersive AI Bootcamp</h4><p>Certificate of completion</p></div>
+        <div class="badge-card"><div class="ic">📚</div><h4>Author — “Korea, Unfiltered” (Amazon)</h4><p>A self-published book about Korea through a Korean college student’s eyes</p></div>
+        <div class="badge-card"><div class="ic">🎬</div><h4>AI Music Video — made with Acron</h4><p>AI-powered video production</p></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="screen" data-screen="contact">
+      <div class="cta">
+        <h2>Let’s grow<br>together and <em>build something</em>.</h2>
+        <p>Available for 3–6 month programs · Seoul, South Korea</p>
+        <a class="cta-btn" href="mailto:seunasu0916@gmail.com">seunasu0916@gmail.com</a>
+      </div>
+      <div class="contact-list">
+        <div class="contact-row">✉️ &nbsp; seunasu0916@gmail.com</div>
+        <div class="contact-row">📍 &nbsp; Seoul, South Korea</div>
+      </div>
+      <footer class="appfoot">© Seoeun Choi — Marketing &amp; Business Strategy Portfolio</footer>
+    </div>
+
+    <!-- PROJECT DETAIL OVERLAYS -->
+    <div class="detail" id="detail-proj1">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>Tridge — Growth Solution Team</h3></div>
+      <div class="detail-body">
+        <span class="badge-inline">Jul 2026 – Oct 2026 · Completed</span>
+        <div class="p-block-label">🎯 Role Overview</div>
+        <p class="p-goal">Worked in the Korea Team of Tridge’s Growth Solution division, supporting Korean companies’ exports, connecting them with overseas buyers, and coordinating trade-related work.</p>
+        <div class="p-block-label">⚡ Key Responsibilities</div>
+        <ul class="p-list p-action">
+          <li>Wrote export business plans for clients preparing to enter overseas markets</li>
+          <li>Sent cold emails to overseas buyers and joined buyer meetings to support communication and deal coordination</li>
+          <li>Supported overseas sales by connecting Korean suppliers with overseas buyers</li>
+          <li>Produced B2B marketing content for local governments such as Uiseong County and Jeju, including trade catalogs, pamphlets, corporate promotional videos, card news, and newsletters</li>
+          <li>Listed and promoted Korean food products on Tridge’s own export platform, Pavilion</li>
+        </ul>
+        <div class="p-block-label">👤 My Role</div>
+        <div class="p-role-row"><span>Export business plans</span><span>Cold emails · buyer meetings</span><span>Overseas sales</span><span>Catalogs · pamphlets · promo videos · card news · newsletters</span><span>Digital marketing (Pavilion platform)</span></div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj2">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>K-QUEST Local Tourism Platform</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 Project Goal</div>
+        <p class="p-goal">I planned a quest-based interactive travel platform so that foreign tourists could actively experience Korea’s local culture instead of just passively visiting landmarks. It turns an information-only travel platform into an interactive, game-like travel experience.</p>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul class="p-list"><li>Repetitive routes centered on major tourist spots</li><li>Passive consumption of travel information</li><li>Weak connection with local shops and communities</li><li>Language barriers and limited localized branding</li></ul>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul class="p-list"><li>Designing a participatory travel experience model</li><li>Participatory tourism focused on immersion in local culture</li><li>Gamification to boost engagement and motivation</li><li>Community features for sharing experiences</li><li>Stronger ties with local shops and neighborhoods</li></ul>
+        <div class="p-block-label">⚡ What I Did</div>
+        <ul class="p-list p-action">
+          <li>Analyzed foreign tourists’ trends and behavior patterns</li>
+          <li>Designed the structure of a quest-based interactive travel experience</li>
+          <li>Developed a map-based UI concept with photo verification and an XP/badge system</li>
+          <li>Designed a reward system linked to local shops</li>
+          <li>Built an app prototype with Lovable</li>
+        </ul>
+        <div class="p-block-label">👤 My Role</div>
+        <div class="p-role-row"><span>Service ideation &amp; concept development</span><span>UX structure design</span><span>Quest-based content planning</span><span>Tourism trend research</span><span>App prototype development (Lovable)</span></div>
+        <div class="p-block-label">🏆 Results</div>
+        <div class="p-result">
+          <ul>
+            <li>Completed the design of a participatory travel platform</li>
+            <li>Designed a map-based UI with XP and badge system</li>
+            <li>Built a working app prototype</li>
+            <li class="award">Excellence Award — CUK Innovation Idea Contest</li>
+            <li class="award">Grand Prize — English Department Creative Idea Contest</li>
+            <li class="award">Passed the first round of Modu-ui Changup</li>
+          </ul>
+        </div>
+        <div class="p-quote">“I learned that even in the same place, how you design the experience can greatly change users’ engagement and satisfaction.”</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj3">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>KOTRA deXters Digital Marketing</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 Project Goal</div>
+        <p class="p-goal">The goal was to help Korean companies expand overseas using digital trade platforms and Meta ads, and to secure and connect real buyers.</p>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul class="p-list"><li>Differences in consumer behavior by country</li><li>Complex export regulations and compliance</li><li>Limited hands-on experience running and optimizing ads</li><li>Difficulty finding and securing overseas leads</li></ul>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul class="p-list"><li>Strategy based on local consumer response</li><li>Analysis of consumption patterns by country</li><li>Local market trend research</li><li>Understanding different perceptions of health supplements</li><li>Evaluating target audience fit for ad campaigns</li></ul>
+        <div class="p-block-label">⚡ What I Did</div>
+        <ul class="p-list p-action">
+          <li>Researched the Kazakhstan market and built an entry strategy</li>
+          <li>Ran and repeatedly optimized Meta ad campaigns (targeting, bidding, performance analysis, landing page improvements)</li>
+          <li>Built a landing page on the buyKOREA platform</li>
+          <li>Secured overseas leads and wrote performance reports</li>
+        </ul>
+        <div class="p-block-label">👤 My Role</div>
+        <div class="p-role-row"><span>Kazakhstan market research</span><span>Trade reports</span><span>Meta ad campaigns</span><span>Landing page creation</span><span>Overseas lead generation</span><span>Ad performance analysis</span></div>
+        <div class="p-block-label">🏆 Results</div>
+        <div class="p-result">
+          <ul>
+            <li>Secured 4 overseas leads</li>
+            <li>Wrote 3 market research reports</li>
+            <li>Analyzed 2 sets of trade statistics</li>
+          </ul>
+        </div>
+        <div class="p-quote">“I realized effective advertising is not just exposure; it needs continuous optimization based on market and consumer feedback.”</div>
+        <div class="p-quote">“I learned how important it is to diagnose problems and act quickly when the unexpected happens.”</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj4">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>Exchange in France + LOVEBOOM</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 Project Goal</div>
+        <p class="p-goal">I developed an overseas expansion strategy for pet fashion brand LOVEBOOM, tailored to each country’s consumer culture and market conditions.</p>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul class="p-list"><li>Different consumer cultures by country</li><li>Different buying criteria and brand perceptions</li><li>Cultural differences in pet ownership and lifestyle</li><li>A one-size-fits-all strategy makes global expansion difficult</li></ul>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul class="p-list"><li>Analysis of consumer traits by country</li><li>Review of cultural differences that shape buying behavior</li><li>Local consumer trend research</li><li>Defining a brand positioning strategy</li></ul>
+        <div class="p-block-label">⚡ What I Did</div>
+        <ul class="p-list p-action">
+          <li>Ran a comparative market analysis of Japan and Greece</li>
+          <li>Applied SWOT, PESTLE, and Hofstede’s cultural dimensions frameworks</li>
+          <li>Developed consumer personas based on local insights</li>
+          <li>Designed and presented a social-media-led marketing strategy</li>
+        </ul>
+        <div class="p-block-label">👤 My Role</div>
+        <div class="p-role-row"><span>Market research and analysis</span><span>Applying strategy frameworks</span><span>Consumer persona development</span><span>Marketing strategy design and presentation</span></div>
+        <div class="p-block-label">🏆 Results</div>
+        <div class="p-result">
+          <ul>
+            <li>Gained global team project experience</li>
+            <li>Strengthened cultural and market analysis skills</li>
+            <li>Gained experience designing consumer-centered strategies</li>
+          </ul>
+        </div>
+        <div class="p-quote">“I realized a strong strategy starts not with the brand message but with empathy for local consumers.”</div>
+        <div class="p-quote">“I understood that the same product can get very different reactions depending on the market and culture.”</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj5">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>AI International Marriage Matching Service</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 Project Goal</div>
+        <p class="p-goal">I designed a trustworthy matching experience to solve information asymmetry and cultural conflict on international marriage platforms.</p>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul class="p-list"><li>Matching built around conditions</li><li>Lack of user trust</li><li>Cultural and language barriers</li><li>Low UX quality</li></ul>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul class="p-list"><li>User-centered matching experience</li><li>Data-based credibility</li><li>Intuitive UX flow</li><li>Easing cultural differences</li><li>Focus on long-term relationships</li><li>Reducing user anxiety</li></ul>
+        <div class="p-block-label">⚡ What I Did</div>
+        <ul class="p-list p-action">
+          <li>UX flow: Sign-up → Personality test → DTC → AI matching → Culture guide</li>
+          <li>Matching logic: personality fit 40% · lifestyle 30% · cultural values 20% · genetic indicators 10%</li>
+          <li>Analyzed pain points around language, culture, trust, and information asymmetry</li>
+          <li>Ran market and competitor analysis to find differentiation</li>
+        </ul>
+        <div class="p-block-label">👤 My Role · CBO</div>
+        <div class="p-role-row"><span>UX flow design</span><span>Matching logic design</span><span>Market sizing</span><span>Competitor analysis</span><span>Marketing strategy</span><span>Pitch deck</span></div>
+        <div class="p-block-label">🏆 Results</div>
+        <div class="p-result">
+          <ul>
+            <li class="award">First-round selection, Startup 300+ Growth Track</li>
+            <li class="award">Capstone Design Encouragement Award</li>
+            <li>Led the full service planning process</li>
+            <li>Strengthened market research, UX design, and service structuring skills</li>
+          </ul>
+        </div>
+        <div class="p-quote">“I realized a good service comes from designing a user experience that builds trust, more than from its features.”</div>
+        <div class="p-quote">“I learned that defining users’ anxieties and pain points is the core of service planning.”</div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail-proj6">
+      <div class="detail-header"><button class="back-btn" type="button" onclick="closeDetail()" aria-label="Back">←</button><h3>SIGNAL Inter-university Film Club</h3></div>
+      <div class="detail-body">
+        <div class="p-block-label">🎯 Project Goal</div>
+        <p class="p-goal">I went through the whole process of planning, filming, and editing many kinds of video content, including music videos, commercials, short films, and variety shows, exploring which content and messages earn viewers’ empathy and attention.</p>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul class="p-list"><li>Turning ideas into finished content</li><li>Aligning opinions within the team</li><li>Leading the whole process from planning to filming and editing</li></ul>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul class="p-list"><li>Developing content based on viewer reactions and engagement patterns</li><li>Focusing on relatable situations and emotions</li><li>Strengthening engagement and storytelling impact</li><li>Keeping the message consistent across formats</li><li>Choosing topics based on cultural and generational trends</li></ul>
+        <div class="p-block-label">⚡ What I Did</div>
+        <ul class="p-list p-action">
+          <li>Produced content in four genres: commercials, music videos, variety, and short films</li>
+          <li>Handled the full production process on my own, from concept, storyboard, filming, and editing to applying feedback</li>
+          <li>Made the short film “Out-Focusing” about the gap between social media and reality, reaching 1,100 views on social media</li>
+        </ul>
+        <div class="p-block-label">👤 My Role</div>
+        <div class="p-role-row"><span>Content planning &amp; storyboards</span><span>Filming &amp; video editing</span><span>Casting &amp; location scouting</span><span>Scheduling &amp; on-screen roles</span></div>
+        <div class="p-block-label">🏆 Results</div>
+        <div class="p-result">
+          <ul>
+            <li>Short film “Out-Focusing” reached 1,100 views</li>
+            <li>About 2x views compared with early videos</li>
+            <li>Completed videos in four genres: commercials, short films, variety, and music videos</li>
+          </ul>
+        </div>
+        <div class="p-quote">“I realized what draws viewers in is empathy, more than flashy visuals.”</div>
+        <div class="p-quote">“I understood that content production is a cycle of planning, executing, collaborating, and improving.”</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tabbar" role="tablist">
+    <button class="tab-btn active" type="button" data-tab="home" onclick="showTab('home')"><span class="ic">🏠</span>Home</button>
+    <button class="tab-btn" type="button" data-tab="skills" onclick="showTab('skills')"><span class="ic">📊</span>Skills</button>
+    <button class="tab-btn" type="button" data-tab="work" onclick="showTab('work')"><span class="ic">💼</span>Projects</button>
+    <button class="tab-btn" type="button" data-tab="about" onclick="showTab('about')"><span class="ic">👤</span>About</button>
+    <button class="tab-btn" type="button" data-tab="contact" onclick="showTab('contact')"><span class="ic">✉️</span>Contact</button>
+  </div>
+  <div class="home-indicator"><span></span></div>
+</div>
+
+<script>
+  const titles = { home:['Portfolio','Home'], skills:['Portfolio','Skills'], work:['Portfolio','Projects'], about:['Portfolio','About'], contact:['Portfolio','Contact'] };
+
+  function showTab(name){
+    if(!titles[name]) return;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelector('.screen[data-screen="'+name+'"]').classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tab-btn[data-tab="'+name+'"]').classList.add('active');
+    closeDetail();
+    document.getElementById('headerEyebrow').textContent = titles[name][0];
+    document.getElementById('headerTitle').textContent = titles[name][1];
+    document.getElementById('screenArea').scrollTop = 0;
+  }
+
+  function openDetail(id){
+    const area = document.getElementById('screenArea');
+    area.scrollTop = 0;
+    area.style.overflow = 'hidden';
+    document.getElementById('detail-'+id).classList.add('active');
+  }
+
+  function closeDetail(){
+    document.querySelectorAll('.detail').forEach(d => d.classList.remove('active'));
+    document.getElementById('screenArea').style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
+
+  // Open a tab from a plain #anchor (e.g. #work)
+  const start = (location.hash || '').replace('#','');
+  if(titles[start]) showTab(start);
+</script>
+
+</body>
+</html>
