@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Seoeun Choi Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  body{ margin:0; }
+
+  :root{
+    color-scheme:light;
+    --paper:#F6F3EA;
+    --card:#FFFFFF;
+    --ink:#1D241E;
+    --ink-soft:#5B6259;
+    --green:#2E5541;
+    --green-soft:#DEE7DC;
+    --gold:#E3A73B;
+    --gold-soft:#F7E7C6;
+    --coral:#FF5A44;
+    --coral-soft:#FFE0DA;
+    --line:#DAD3C1;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--paper); color:var(--ink); font-family:'Work Sans','Noto Sans CJK KR',sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  .wrap{ max-width:1100px; margin:0 auto; padding-left:max(32px, env(safe-area-inset-left,0px)); padding-right:max(32px, env(safe-area-inset-right,0px)); }
+  .serif{ font-family:'Fraunces',serif; }
+  .mono{ font-family:'Space Mono',monospace; }
+
+  nav{ position:sticky; top:env(safe-area-inset-top,0px); backdrop-filter:blur(6px); z-index:50; background:rgba(246,243,234,0.9); border-bottom:1px solid var(--line); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo{ font-family:'Fraunces',serif; font-weight:700; font-size:19px; }
+  .logo span{ color:var(--coral); }
+  .navlinks{ display:flex; gap:22px; list-style:none; }
+  .navlinks a{ font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink); text-decoration:none; font-weight:700; font-family:'Space Mono','Noto Sans CJK KR',monospace; }
+
+  .hero{
+    position:relative; overflow:hidden; padding:90px 0 56px;
+    background-image:
+      linear-gradient(rgba(46,85,65,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,85,65,0.07) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  .eyebrow-tag{
+    display:inline-flex; align-items:center; gap:8px; font-family:'Space Mono','Noto Sans CJK KR',monospace;
+    font-size:11.5px; letter-spacing:.06em; background:var(--green); color:var(--paper);
+    padding:6px 14px; border-radius:100px; font-weight:700; text-transform:uppercase;
+  }
+  .hero h1{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-weight:600; font-size:clamp(32px,5vw,50px); line-height:1.22; margin-top:20px; }
+  .hero h1 em{ font-style:italic; color:var(--green); }
+  .hero .role{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:13px; margin-top:14px; color:var(--ink-soft); }
+  .hero .lede{ max-width:660px; margin-top:20px; font-size:16px; line-height:1.8; color:var(--ink-soft); }
+  .hero .lede + .lede{ margin-top:14px; }
+  .avail{
+    margin-top:26px; display:inline-flex; gap:10px; align-items:center;
+    background:var(--card); border:1px solid var(--line); padding:10px 16px; border-radius:12px;
+    font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:12px;
+  }
+  .avail .dot{ width:8px; height:8px; border-radius:50%; background:var(--coral); }
+
+  .tags-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .tag{ background:var(--card); border:1px solid var(--line); font-size:13px; font-weight:600; padding:9px 16px; border-radius:100px; }
+
+  .ticker-wrap{ margin-top:48px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); overflow:hidden; background:var(--ink); }
+  .ticker{ display:flex; white-space:nowrap; animation:scroll 26s linear infinite; }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .ticker{ animation:none; } }
+  .ticker span{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:12.5px; color:var(--paper); padding:14px 24px; }
+  .ticker span::after{ content:"◆"; margin-left:24px; color:var(--gold); }
+
+  section{ padding:76px 0; }
+  .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:36px; }
+  .sec-num{ font-family:'Space Mono',monospace; color:var(--coral); font-weight:700; font-size:13px; }
+  .sec-head h2{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-weight:600; font-size:clamp(26px,3.6vw,36px); }
+  .sec-sub{ font-size:12px; font-family:'Space Mono','Noto Sans CJK KR',monospace; letter-spacing:.04em; color:var(--ink-soft); margin-top:4px; }
+  .sec-rule{ flex:1; height:1px; background:var(--line); }
+
+  .comp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  .comp-bar{ margin-bottom:20px; }
+  .cb-top{ display:flex; justify-content:space-between; font-size:14px; font-weight:700; margin-bottom:8px; }
+  .cb-top span:last-child{ font-family:'Space Mono',monospace; color:var(--green); }
+  .comp-track{ height:9px; background:var(--green-soft); border-radius:100px; overflow:hidden; }
+  .comp-fill{ height:100%; background:var(--green); border-radius:100px; }
+
+  .tool-cat{ margin-bottom:22px; }
+  .tool-cat .cat-label{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:11px; letter-spacing:.08em; color:var(--coral); font-weight:700; margin-bottom:10px; }
+  .tool-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tool-chips span{ background:var(--card); border:1px solid var(--line); font-size:12.5px; padding:7px 13px; border-radius:100px; }
+
+  .lang-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  .lang-pill{ background:var(--green-soft); color:var(--green); font-family:'Space Mono','Noto Sans CJK KR',monospace; font-weight:700; font-size:12px; padding:8px 14px; border-radius:100px; }
+
+  .proj{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:38px 40px; margin-bottom:26px; position:relative; overflow:hidden; }
+  .proj::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; }
+  .p-green::before{ background:var(--green); } .p-gold::before{ background:var(--gold); } .p-coral::before{ background:var(--coral); }
+
+  .proj-top{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:flex-start; }
+  .proj-idx{ font-family:'Fraunces',serif; font-size:15px; color:var(--ink-soft); font-weight:700; }
+  .proj h3{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-size:22px; font-weight:600; margin-top:6px; }
+  .proj .p-sub{ font-size:13.5px; color:var(--ink-soft); margin-top:4px; }
+  .proj-meta{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .proj-meta span{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:10.5px; padding:4px 10px; border-radius:100px; border:1px solid var(--line); color:var(--ink-soft); }
+
+  .p-block-label{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--green); font-weight:700; margin:22px 0 8px; }
+  .p-goal{ font-size:14px; line-height:1.75; color:var(--ink-soft); }
+
+  .p-2col{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:6px; }
+  .p-2col ul{ list-style:none; }
+  .p-2col li{ font-size:13px; line-height:1.6; padding-left:16px; position:relative; margin-bottom:5px; color:var(--ink-soft); }
+  .p-2col li::before{ content:"·"; position:absolute; left:0; color:var(--coral); font-weight:900; }
+
+  .p-action{ list-style:none; margin-top:4px; }
+  .p-action li{ font-size:13.5px; line-height:1.7; padding-left:20px; position:relative; margin-bottom:6px; color:var(--ink-soft); }
+  .p-action li::before{ content:"→"; position:absolute; left:0; color:var(--coral); font-weight:700; }
+
+  .p-role-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+  .p-role-row span{ background:var(--paper); border:1px solid var(--line); font-size:11.5px; padding:5px 11px; border-radius:100px; }
+
+  .p-result{ background:var(--green-soft); border-radius:14px; padding:16px 18px; margin-top:8px; }
+  .p-result ul{ list-style:none; }
+  .p-result li{ font-size:13.5px; line-height:1.7; padding-left:18px; position:relative; margin-bottom:5px; color:var(--ink); font-weight:500; }
+  .p-result li::before{ content:"✓"; position:absolute; left:0; color:var(--green); font-weight:700; }
+  .p-result li.award::before{ content:"🏆"; }
+
+  .p-quote{ margin-top:18px; border-left:3px solid var(--gold); padding-left:14px; font-family:'Fraunces','Noto Serif CJK KR',serif; font-style:italic; font-size:13.5px; line-height:1.7; color:var(--ink-soft); }
+  .p-quote + .p-quote{ margin-top:10px; }
+
+  .ov-wrap{ overflow-x:auto; background:var(--card); border:1px solid var(--line); border-radius:18px; }
+  table.ov{ width:100%; border-collapse:collapse; font-size:13px; min-width:700px; }
+  table.ov th{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); text-align:left; padding:14px 18px; border-bottom:1px solid var(--line); }
+  table.ov td{ padding:14px 18px; border-bottom:1px solid var(--line); color:var(--ink-soft); line-height:1.5; }
+  table.ov tr:last-child td{ border-bottom:none; }
+  table.ov td:first-child{ font-weight:700; color:var(--ink); font-family:'Fraunces','Noto Serif CJK KR',serif; }
+
+  .values-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .value-card{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:26px; }
+  .value-card h4{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-size:18px; margin-bottom:12px; color:var(--green); }
+  .value-card ul{ list-style:none; }
+  .value-card li{ font-size:13px; line-height:1.7; padding-left:16px; position:relative; margin-bottom:5px; color:var(--ink-soft); }
+  .value-card li::before{ content:"—"; position:absolute; left:0; color:var(--coral); }
+  .values-quote{ margin-top:30px; text-align:center; font-family:'Fraunces','Noto Serif CJK KR',serif; font-style:italic; font-size:clamp(17px,2vw,20px); color:var(--green); line-height:1.6; }
+  .values-quote span{ display:block; margin-top:10px; font-family:'Space Mono','Noto Sans CJK KR',monospace; font-style:normal; font-size:12px; color:var(--ink-soft); }
+
+  .edu-card{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:32px 36px; }
+  .edu-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+  .edu-top h3{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-weight:600; font-size:21px; }
+  .edu-org{ color:var(--green); font-weight:600; margin-top:4px; font-size:14px; }
+  .edu-time{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:11.5px; background:var(--gold-soft); color:#7A5613; padding:6px 12px; border-radius:100px; white-space:nowrap; }
+  .edu-note{ margin-top:16px; font-size:13.5px; line-height:1.7; color:var(--ink-soft); border-left:3px solid var(--gold); padding-left:14px; }
+  .course-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+  .course-tags span{ font-size:12px; border:1px solid var(--line); padding:6px 12px; border-radius:100px; color:var(--ink-soft); }
+
+  .badges-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px; }
+  .badge-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; text-align:center; }
+  .badge-card .ic{ font-size:24px; }
+  .badge-card h4{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-size:14.5px; margin-top:10px; line-height:1.35; }
+  .badge-card p{ font-size:11.5px; color:var(--ink-soft); margin-top:6px; line-height:1.5; }
+
+  .side-head{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); font-weight:700; margin:36px 0 6px; }
+  .side-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:18px; }
+  .side-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .side-card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px; }
+  .side-card h4{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-size:16.5px; font-weight:600; margin-bottom:6px; }
+  .side-card p{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:14px; }
+  .side-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .side-tags span{ font-size:11px; border:1px solid var(--line); padding:4px 10px; border-radius:100px; color:var(--ink-soft); }
+  .side-link{ font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:11.5px; font-weight:700; color:var(--green); text-decoration:none; }
+
+  .cta{ background:var(--ink); color:var(--paper); border-radius:28px; padding:56px 48px; text-align:center; }
+  .cta h2{ font-family:'Fraunces','Noto Serif CJK KR',serif; font-size:clamp(26px,4vw,40px); font-weight:600; line-height:1.35; }
+  .cta h2 em{ color:var(--gold); font-style:italic; }
+  .cta p{ margin-top:14px; color:#C8CBC4; font-size:14px; }
+  .cta-btn{ display:inline-block; margin-top:26px; background:var(--coral); color:#fff; font-family:'Space Mono',monospace; font-weight:700; font-size:13.5px; padding:15px 30px; border-radius:100px; text-decoration:none; }
+  footer{ text-align:center; padding:28px 0; font-family:'Space Mono','Noto Sans CJK KR',monospace; font-size:11px; color:var(--ink-soft); }
+
+  
+
+  h1,h2,h3,h4{ text-wrap:balance; }
+  .navlinks a:hover, .side-link:hover{ color:var(--coral); }
+  a:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; border-radius:4px; }
+  body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:60; background:var(--paper); }
+  .cta-btn{ user-select:all; }
+  @media(max-width:760px){
+    .comp-grid, .values-grid, .p-2col{ grid-template-columns:1fr; }
+    .navlinks{ display:none; }
+    .proj, .edu-card, .cta{ padding:26px 22px; }
+    .wrap{ padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); }
+    .edu-time{ white-space:normal; }
+  }
+</style>
+</head>
+<body>
+
+
+
+<nav>
+  <div class="wrap">
+    <div class="logo">S. Choi<span>.</span></div>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#work">Projects</a></li>
+      <li><a href="#values">Values</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="about">
+  <div class="wrap">
+    <span class="eyebrow-tag">● 01 About Me</span>
+    <h1>Seoeun Choi — connecting<br>the world as a curious <em>global bridge.</em></h1>
+    <p class="role">The Catholic University of Korea · English Language &amp; Literature and Business Administration · seunasu0916@gmail.com</p>
+    <p class="lede">My strength is observing people’s needs and market trends, then turning them into practical strategies and concrete results.</p>
+    <p class="lede">Through projects in Korea and abroad, I have built balanced skills across planning, data analysis, content creation, digital marketing, and global collaboration. I want to use this experience to connect consumers and companies in Korean and global markets and create new value and opportunities.</p>
+    <div class="avail"><span class="dot"></span> Available for 3–6 month programs</div>
+    <div class="tags-row">
+      <span class="tag">💡 Problem Solving</span>
+      <span class="tag">👁 User Insight</span>
+      <span class="tag">✏️ Content Planning</span>
+      <span class="tag">📣 Digital Marketing</span>
+      <span class="tag">🌐 Global Communication</span>
+      <span class="tag">🚀 Execution</span>
+    </div>
+  </div>
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Market Research</span><span>Campaign Strategy</span><span>Content Planning</span><span>Data Analysis</span><span>Global Communication</span><span>Digital Marketing</span><span>UX &amp; Gamification</span>
+      <span>Market Research</span><span>Campaign Strategy</span><span>Content Planning</span><span>Data Analysis</span><span>Global Communication</span><span>Digital Marketing</span><span>UX &amp; Gamification</span>
+    </div>
+  </div>
+</header>
+
+<!-- SKILLS / COMPETENCY -->
+<section id="skills" class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><div><h2>Competencies &amp; Skills</h2><div class="sec-sub">Core competencies, tools &amp; skills</div></div><div class="sec-rule"></div></div>
+
+  <div class="comp-grid">
+    <div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Planning &amp; Problem Solving</span><span>90%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:90%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Collaboration &amp; Execution</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Content Planning &amp; Production</span><span>85%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:85%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Digital Marketing</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+      <div class="comp-bar">
+        <div class="cb-top"><span>Global Communication</span><span>80%</span></div>
+        <div class="comp-track"><div class="comp-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tool-cat">
+        <div class="cat-label">Design / Content</div>
+        <div class="tool-chips"><span>Canva</span><span>Figma</span><span>Adobe Premiere Pro</span><span>CapCut</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Planning / Office</div>
+        <div class="tool-chips"><span>PowerPoint</span><span>Word</span><span>Excel</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">AI Tools</div>
+        <div class="tool-chips"><span>Codex</span><span>Claude Code</span><span>Lovable</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Marketing</div>
+        <div class="tool-chips"><span>Meta Ads</span><span>Market Research</span><span>Content Planning</span></div>
+      </div>
+      <div class="tool-cat">
+        <div class="cat-label">Languages</div>
+        <div class="lang-row">
+          <span class="lang-pill">Korean · Native</span>
+          <span class="lang-pill">English · Conversational</span>
+          <span class="lang-pill">French · Beginner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="work" class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Projects</h2><div class="sec-rule"></div></div>
+
+  <!-- PROJECT 01 -->
+  <div class="proj p-green">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-1</div>
+        <h3>Tridge — Growth Solution Team</h3>
+        <div class="p-sub">Supported export operations and buyer relations in the Korea Team</div>
+        <div class="proj-meta"><span>Export Coordinator (Intern) · Korea Team</span><span>Jul 2026 – Oct 2026</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Role Overview</div>
+    <p class="p-goal">Worked in the Korea Team of Tridge’s Growth Solution division, supporting Korean companies’ exports, connecting them with overseas buyers, and coordinating trade-related work.</p>
+
+    <div class="p-block-label">⚡ Key Responsibilities</div>
+    <ul class="p-action">
+      <li>Wrote export business plans for clients preparing to enter overseas markets</li>
+      <li>Sent cold emails to overseas buyers and joined buyer meetings to support communication and deal coordination</li>
+      <li>Supported overseas sales by connecting Korean suppliers with overseas buyers</li>
+      <li>Produced B2B marketing content for local governments such as Uiseong County and Jeju, including trade catalogs, pamphlets, corporate promotional videos, card news, and newsletters</li>
+      <li>Listed and promoted Korean food products on Tridge’s own export platform, Pavilion</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role</div>
+    <div class="p-role-row"><span>Export business plans</span><span>Cold emails · buyer meetings</span><span>Overseas sales</span><span>Catalogs · pamphlets · promo videos · card news · newsletters</span><span>Digital marketing (Pavilion platform)</span></div>
+  </div>
+
+  <!-- PROJECT 02 -->
+  <div class="proj p-gold">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-2</div>
+        <h3>K-QUEST Local Tourism Platform</h3>
+        <div class="p-sub">An English Department club project: a quest-based interactive travel platform for foreign tourists</div>
+        <div class="proj-meta"><span>English Department Club Project</span><span>Mar – Jun 2026 · 4 months</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Project Goal</div>
+    <p class="p-goal">I planned a quest-based interactive travel platform so that foreign tourists could actively experience Korea’s local culture instead of just passively visiting landmarks. It turns an information-only travel platform into an interactive, game-like travel experience.</p>
+
+    <div class="p-2col">
+      <div>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul><li>Repetitive routes centered on major tourist spots</li><li>Passive consumption of travel information</li><li>Weak connection with local shops and communities</li><li>Language barriers and limited localized branding</li></ul>
+      </div>
+      <div>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul><li>Designing a participatory travel experience model</li><li>Participatory tourism focused on immersion in local culture</li><li>Gamification to boost engagement and motivation</li><li>Community features for sharing experiences</li><li>Stronger ties with local shops and neighborhoods</li></ul>
+      </div>
+    </div>
+
+    <div class="p-block-label">⚡ What I Did</div>
+    <ul class="p-action">
+      <li>Analyzed foreign tourists’ trends and behavior patterns</li>
+      <li>Designed the structure of a quest-based interactive travel experience</li>
+      <li>Developed a map-based UI concept with photo verification and an XP/badge system</li>
+      <li>Designed a reward system linked to local shops</li>
+      <li>Built an app prototype with Lovable</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role</div>
+    <div class="p-role-row"><span>Service ideation &amp; concept development</span><span>UX structure design</span><span>Quest-based content planning</span><span>Tourism trend research</span><span>App prototype development (Lovable)</span></div>
+
+    <div class="p-block-label">🏆 Results</div>
+    <div class="p-result">
+      <ul>
+        <li>Completed the design of a participatory travel platform</li>
+        <li>Designed a map-based UI with XP and badge system</li>
+        <li>Built a working app prototype</li>
+        <li class="award">Excellence Award — CUK Innovation Idea Contest</li>
+        <li class="award">Grand Prize — English Department Creative Idea Contest</li>
+        <li class="award">Passed the first round of Modu-ui Changup</li>
+      </ul>
+    </div>
+
+    <div class="p-quote">“I learned that even in the same place, how you design the experience can greatly change users’ engagement and satisfaction.”</div>
+  </div>
+
+  <!-- PROJECT 03 -->
+  <div class="proj p-coral">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-3</div>
+        <h3>KOTRA deXters Digital Marketing Project</h3>
+        <div class="p-sub">Digital-trade project for overseas market entry</div>
+        <div class="proj-meta"><span>Digital Marketer</span><span>Aug – Oct 2025 · 3 months</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Project Goal</div>
+    <p class="p-goal">The goal was to help Korean companies expand overseas using digital trade platforms and Meta ads, and to secure and connect real buyers.</p>
+
+    <div class="p-2col">
+      <div>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul><li>Differences in consumer behavior by country</li><li>Complex export regulations and compliance</li><li>Limited hands-on experience running and optimizing ads</li><li>Difficulty finding and securing overseas leads</li></ul>
+      </div>
+      <div>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul><li>Strategy based on local consumer response</li><li>Analysis of consumption patterns by country</li><li>Local market trend research</li><li>Understanding different perceptions of health supplements</li><li>Evaluating target audience fit for ad campaigns</li></ul>
+      </div>
+    </div>
+
+    <div class="p-block-label">⚡ What I Did</div>
+    <ul class="p-action">
+      <li>Researched the Kazakhstan market and built an entry strategy</li>
+      <li>Ran and repeatedly optimized Meta ad campaigns (targeting, bidding, performance analysis, landing page improvements)</li>
+      <li>Built a landing page on the buyKOREA platform</li>
+      <li>Secured overseas leads and wrote performance reports</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role</div>
+    <div class="p-role-row"><span>Kazakhstan market research</span><span>Trade reports</span><span>Meta ad campaigns</span><span>Landing page creation</span><span>Overseas lead generation</span><span>Ad performance analysis</span></div>
+
+    <div class="p-block-label">🏆 Results</div>
+    <div class="p-result">
+      <ul>
+        <li>Secured 4 overseas leads</li>
+        <li>Wrote 3 market research reports</li>
+        <li>Analyzed 2 sets of trade statistics</li>
+      </ul>
+    </div>
+
+    <div class="p-quote">“I realized effective advertising is not just exposure; it needs continuous optimization based on market and consumer feedback.”</div>
+    <div class="p-quote">“I learned how important it is to diagnose problems and act quickly when the unexpected happens.”</div>
+  </div>
+
+  <!-- PROJECT 04 -->
+  <div class="proj p-green">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-4</div>
+        <h3>Exchange in France + LOVEBOOM Project</h3>
+        <div class="p-sub">Building an overseas expansion strategy for a pet fashion brand</div>
+        <div class="proj-meta"><span>Global Team Project</span><span>Sep – Dec 2024 · 3 months</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Project Goal</div>
+    <p class="p-goal">I developed an overseas expansion strategy for pet fashion brand LOVEBOOM, tailored to each country’s consumer culture and market conditions.</p>
+
+    <div class="p-2col">
+      <div>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul><li>Different consumer cultures by country</li><li>Different buying criteria and brand perceptions</li><li>Cultural differences in pet ownership and lifestyle</li><li>A one-size-fits-all strategy makes global expansion difficult</li></ul>
+      </div>
+      <div>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul><li>Analysis of consumer traits by country</li><li>Review of cultural differences that shape buying behavior</li><li>Local consumer trend research</li><li>Defining a brand positioning strategy</li></ul>
+      </div>
+    </div>
+
+    <div class="p-block-label">⚡ What I Did</div>
+    <ul class="p-action">
+      <li>Ran a comparative market analysis of Japan and Greece</li>
+      <li>Applied SWOT, PESTLE, and Hofstede’s cultural dimensions frameworks</li>
+      <li>Developed consumer personas based on local insights</li>
+      <li>Designed and presented a social-media-led marketing strategy</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role</div>
+    <div class="p-role-row"><span>Market research and analysis</span><span>Applying strategy frameworks</span><span>Consumer persona development</span><span>Marketing strategy design and presentation</span></div>
+
+    <div class="p-block-label">🏆 Results</div>
+    <div class="p-result">
+      <ul>
+        <li>Gained global team project experience</li>
+        <li>Strengthened cultural and market analysis skills</li>
+        <li>Gained experience designing consumer-centered strategies</li>
+      </ul>
+    </div>
+
+    <div class="p-quote">“I realized a strong strategy starts not with the brand message but with empathy for local consumers.”</div>
+    <div class="p-quote">“I understood that the same product can get very different reactions depending on the market and culture.”</div>
+  </div>
+
+  <!-- PROJECT 05 -->
+  <div class="proj p-gold">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-5</div>
+        <h3>AI-based International Marriage Matching Service</h3>
+        <div class="p-sub">Planning a global matching platform built on AI and DTC</div>
+        <div class="proj-meta"><span>CBO (Chief Business Officer)</span><span>Mar – Jun 2024 · 4 months</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Project Goal</div>
+    <p class="p-goal">I designed a trustworthy matching experience to solve information asymmetry and cultural conflict on international marriage platforms.</p>
+
+    <div class="p-2col">
+      <div>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul><li>Matching built around conditions</li><li>Lack of user trust</li><li>Cultural and language barriers</li><li>Low UX quality</li></ul>
+      </div>
+      <div>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul><li>User-centered matching experience</li><li>Data-based credibility</li><li>Intuitive UX flow</li><li>Easing cultural differences</li><li>Focus on long-term relationships</li><li>Reducing user anxiety</li></ul>
+      </div>
+    </div>
+
+    <div class="p-block-label">⚡ What I Did</div>
+    <ul class="p-action">
+      <li>UX flow: Sign-up → Personality test → DTC → AI matching → Culture guide</li>
+      <li>Matching logic: personality fit 40% · lifestyle 30% · cultural values 20% · genetic indicators 10%</li>
+      <li>Analyzed pain points around language, culture, trust, and information asymmetry</li>
+      <li>Ran market and competitor analysis to find differentiation</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role · CBO</div>
+    <div class="p-role-row"><span>UX flow design</span><span>Matching logic design</span><span>Market sizing</span><span>Competitor analysis</span><span>Marketing strategy</span><span>Pitch deck</span></div>
+
+    <div class="p-block-label">🏆 Results</div>
+    <div class="p-result">
+      <ul>
+        <li class="award">First-round selection, Startup 300+ Growth Track</li>
+        <li class="award">Capstone Design Encouragement Award</li>
+        <li>Led the full service planning process</li>
+        <li>Strengthened market research, UX design, and service structuring skills</li>
+      </ul>
+    </div>
+
+    <div class="p-quote">“I realized a good service comes from designing a user experience that builds trust, more than from its features.”</div>
+    <div class="p-quote">“I learned that defining users’ anxieties and pain points is the core of service planning.”</div>
+  </div>
+
+  <!-- PROJECT 06 -->
+  <div class="proj p-coral">
+    <div class="proj-top">
+      <div>
+        <div class="proj-idx">03-6</div>
+        <h3>SIGNAL Inter-university Film Club</h3>
+        <div class="p-sub">Video content planning and production</div>
+        <div class="proj-meta"><span>Planning · Filming · Editing</span><span>Feb 2023 – Feb 2024 · 12 months</span></div>
+      </div>
+    </div>
+
+    <div class="p-block-label">🎯 Project Goal</div>
+    <p class="p-goal">I went through the whole process of planning, filming, and editing many kinds of video content, including music videos, commercials, short films, and variety shows, exploring which content and messages earn viewers’ empathy and attention.</p>
+
+    <div class="p-2col">
+      <div>
+        <div class="p-block-label">⚠️ Problems Identified</div>
+        <ul><li>Turning ideas into finished content</li><li>Aligning opinions within the team</li><li>Leading the whole process from planning to filming and editing</li></ul>
+      </div>
+      <div>
+        <div class="p-block-label">🔍 Focus Areas</div>
+        <ul><li>Developing content based on viewer reactions and engagement patterns</li><li>Focusing on relatable situations and emotions</li><li>Strengthening engagement and storytelling impact</li><li>Keeping the message consistent across formats</li><li>Choosing topics based on cultural and generational trends</li></ul>
+      </div>
+    </div>
+
+    <div class="p-block-label">⚡ What I Did</div>
+    <ul class="p-action">
+      <li>Produced content in four genres: commercials, music videos, variety, and short films</li>
+      <li>Handled the full production process on my own, from concept, storyboard, filming, and editing to applying feedback</li>
+      <li>Made the short film “Out-Focusing” about the gap between social media and reality, reaching 1,100 views on social media</li>
+    </ul>
+
+    <div class="p-block-label">👤 My Role</div>
+    <div class="p-role-row"><span>Content planning &amp; storyboards</span><span>Filming &amp; video editing</span><span>Casting &amp; location scouting</span><span>Scheduling &amp; on-screen roles</span></div>
+
+    <div class="p-block-label">🏆 Results</div>
+    <div class="p-result">
+      <ul>
+        <li>Short film “Out-Focusing” reached 1,100 views</li>
+        <li>About 2x views compared with early videos</li>
+        <li>Completed videos in four genres: commercials, short films, variety, and music videos</li>
+      </ul>
+    </div>
+
+    <div class="p-quote">“I realized what draws viewers in is empathy, more than flashy visuals.”</div>
+    <div class="p-quote">“I understood that content production is a cycle of planning, executing, collaborating, and improving.”</div>
+  </div>
+
+  <!-- OVERVIEW TABLE -->
+  <div class="p-block-label" style="margin-top:8px; color:var(--coral);">Projects at a Glance</div>
+  <div class="ov-wrap">
+    <table class="ov">
+      <thead><tr><th>Projects</th><th>Period</th><th>Role</th><th>Key Activities</th><th>Results</th></tr></thead>
+      <tbody>
+        <tr><td>Tridge</td><td>2026.7–2026.10</td><td>Export Coordinator (Intern)</td><td>Export business plans, cold emails &amp; buyer meetings, overseas sales, marketing content, digital marketing (Pavilion)</td><td>Food product listings &amp; B2B content production</td></tr>
+        <tr><td>AI Marriage Matching</td><td>2024.3–6</td><td>CBO (Chief Business Officer)</td><td>UX design, matching logic, market research</td><td>Startup 300+ selection, Encouragement Award</td></tr>
+        <tr><td>KOTRA deXters</td><td>2025.8–10</td><td>Digital Marketer</td><td>Meta ads, market research, lead generation</td><td>4 overseas leads, 3 reports</td></tr>
+        <tr><td>SIGNAL Club</td><td>2023.2–2024.2</td><td>Planning · Filming · Editing</td><td>Commercials, music videos, short films</td><td>Top video: 1.1K views</td></tr>
+        <tr><td>LOVEBOOM (Exchange Program)</td><td>2024.9–12</td><td>Strategy Planning</td><td>SWOT · PESTLE · cultural dimensions analysis</td><td>Global team strategy experience</td></tr>
+        <tr><td>K-QUEST</td><td>2026.3–6</td><td>Service planning</td><td>UX design, quest planning, prototype</td><td>Grand Prize &amp; Excellence Award; passed Modu-ui Changup round 1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="side-head">🤖 AI Bootcamp Apps</div>
+  <p class="side-sub">Apps I built and deployed on my own with AI development tools during an AI bootcamp</p>
+  <div class="side-grid">
+    <div class="side-card">
+      <h4>BuyNow?</h4>
+      <p>A grocery-timing app built on producer price index data. It ranks the items with the biggest price changes this month, shows the cheapest seasonal ingredients right now, and offers a wishlist, alerts, and price-linked recipe suggestions.</p>
+      <div class="side-tags"><span>Data-driven insight</span><span>Consumer decision support</span></div>
+      <a class="side-link" href="https://buynow-green-seven.vercel.app" target="_blank" rel="noopener">View app →</a>
+    </div>
+    <div class="side-card">
+      <h4>Bee &amp; Badger's College Culture Quiz</h4>
+      <p>A gamified quiz app where two mascot characters teach Korean college culture and common knowledge. A collectible “travel passport” tracks learning progress.</p>
+      <div class="side-tags"><span>Character design</span><span>Gamified learning</span></div>
+      <a class="side-link" href="https://jazzy-gelato-01dc66.netlify.app" target="_blank" rel="noopener">View app →</a>
+    </div>
+    <div class="side-card">
+      <h4>Subway Aphorism Line</h4>
+      <p>A subway-themed microlearning game. At each “station,” a famous quote is revealed with its original text, Korean translation, and meaning, followed by a quiz on who said it.</p>
+      <div class="side-tags"><span>Microlearning</span><span>Content curation</span></div>
+      <a class="side-link" href="https://seunasu0916-ui.github.io/game_quote-subway/" target="_blank" rel="noopener">View app →</a>
+    </div>
+    <div class="side-card">
+      <h4>K-QUEST</h4>
+      <p>An interactive prototype of the quest-based travel platform above, with a map-based UI, photo verification, and an XP/badge system tied to rewards at local shops.</p>
+      <div class="side-tags"><span>Service planning</span><span>Local shop partnerships</span></div>
+      <a class="side-link" href="https://quest-korea-go.lovable.app" target="_blank" rel="noopener">View app →</a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section id="values" class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Strengths &amp; Values</h2><div class="sec-rule"></div></div>
+  <p style="font-size:13.5px; color:var(--ink-soft); margin-bottom:26px;">Four core mindsets behind every project</p>
+  <div class="values-grid">
+    <div class="value-card">
+      <h4>Curiosity First</h4>
+      <ul><li>A habit of observing how people behave and react</li><li>Asking “why” until I reach the core insight</li><li>Strong interest in trends and cultural shifts</li><li>User-centered thinking and shifting perspectives</li></ul>
+    </div>
+    <div class="value-card">
+      <h4>From Idea to Execution</h4>
+      <ul><li>Structuring ideas into actionable plans</li><li>Moving fast through constant iteration and improvement</li><li>Learning by building and testing in practice</li><li>A results-driven focus on visible outcomes</li></ul>
+    </div>
+    <div class="value-card">
+      <h4>Flexible and Open-minded</h4>
+      <ul><li>Adapting quickly to new environments</li><li>Openness to different perspectives and ideas</li><li>Flexible, effective communication</li><li>Collaborative, team-based problem solving</li></ul>
+    </div>
+    <div class="value-card">
+      <h4>Experience-driven Thinking</h4>
+      <ul><li>Designing solutions from real experience</li><li>Emphasis on immersive, engaging user flows</li><li>Focusing on the whole context over isolated details</li><li>Designing seamlessly connected user experiences</li></ul>
+    </div>
+  </div>
+  <p class="values-quote">“I am passionate about discovering what people need and turning it into better experiences and meaningful content.”<span>— Seoeun Choi</span></p>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Education</h2><div class="sec-rule"></div></div>
+  <div class="edu-card" style="margin-bottom:20px;">
+    <div class="edu-top">
+      <div>
+        <h3>B.A. in English Language &amp; Literature / Business Administration</h3>
+        <div class="edu-org">The Catholic University of Korea — Bucheon, South Korea</div>
+      </div>
+      <span class="edu-time">Mar 2022 – Feb 2027</span>
+    </div>
+    <div class="course-tags">
+      <span>Sales Negotiation</span><span>Marketing Psychology</span><span>Social Media Marketing</span>
+      <span>Internet &amp; Mobile Marketing</span><span>Project Management</span><span>Public Relations</span>
+      <span>Leadership Development</span><span>Management Economics</span><span>Marketing &amp; Creative Strategy</span>
+    </div>
+  </div>
+  <div class="edu-card">
+    <div class="edu-top">
+      <div>
+        <h3>Exchange Program — Business Administration, International Business</h3>
+        <div class="edu-org">IÉSEG School of Management &amp; ESTICE International Business School — Lille, France</div>
+      </div>
+      <span class="edu-time">2024 – 2025 · 6 months</span>
+    </div>
+    <p class="edu-note">🌍 An exchange semester focused on international business, where I built the cross-cultural collaboration and local market analysis skills used in the LOVEBOOM case study.</p>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Awards &amp; Certificates</h2><div class="sec-rule"></div></div>
+  <div class="badges-row">
+    <div class="badge-card"><div class="ic">🥇</div><h4>Grand Prize — English Department Creative Idea Contest</h4><p>The Catholic University of Korea</p></div>
+    <div class="badge-card"><div class="ic">🥈</div><h4>Excellence Award — CUK Innovation Idea Contest</h4><p>The Catholic University of Korea</p></div>
+    <div class="badge-card"><div class="ic">🎖️</div><h4>Capstone Design — Encouragement Award</h4><p>The Catholic University of Korea, Spring 2024</p></div>
+    <div class="badge-card"><div class="ic">🚀</div><h4>Startup Program — First-round Selection</h4><p>Startup 300+ Growth Track</p></div>
+    <div class="badge-card"><div class="ic">🌐</div><h4>KOTRA deXters Program Certificate</h4><p>Issued by KOTRA (Korea Trade-Investment Promotion Agency) · 8 weeks, Aug – Oct 2025</p></div>
+    <div class="badge-card"><div class="ic">🎓</div><h4>AI Content Creator Instructor Program</h4><p>Certificate — completed a program on the skills needed to teach AI-based content creation</p></div>
+    <div class="badge-card"><div class="ic">🤖</div><h4>Immersive AI Bootcamp</h4><p>Certificate — completed an intensive, hands-on AI bootcamp to build practical skills</p></div>
+    <div class="badge-card"><div class="ic">📚</div><h4>Author — “Korea, Unfiltered” (Amazon)</h4><p>A self-published book introducing Korea through a Korean college student’s eyes rather than a tourist’s, covering common stereotypes and honest answers, the vibe of each city, and daily life in Korea</p></div>
+    <div class="badge-card"><div class="ic">🎬</div><h4>AI Music Video — made with Acron</h4><p>Explored AI-based video production by making an AI music video with Acron</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="wrap">
+  <div class="cta">
+    <h2>Let’s grow<br>together and <em>build something</em>.</h2>
+    <p>Available for 3–6 month programs · Seoul, South Korea</p>
+    <a class="cta-btn" href="mailto:seunasu0916@gmail.com">seunasu0916@gmail.com</a>
+  </div>
+</section>
+
+<footer>© Seoeun Choi — Marketing &amp; Business Strategy Portfolio</footer>
+
+
+</body>
+</html>
